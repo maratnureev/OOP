@@ -1,0 +1,4 @@
+Replace test 
+second string repl
+replace Replace
+test end

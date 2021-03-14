@@ -1,0 +1,4 @@
+VALID test 
+second string repl
+replace VALID
+test end
