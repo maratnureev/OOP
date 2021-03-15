@@ -17,6 +17,12 @@ SCENARIO("Handle string with all html characters")
 	REQUIRE(HtmlDecode(htmlString) == "Cat <says> \"Meow\". M&M's");
 }
 
+SCENARIO("Handle string with non-html characters")
+{
+	std::string htmlString = "&tur; is unknown symbol. &len; is unknown symbol";
+	REQUIRE(HtmlDecode(htmlString) == "&tur; is unknown symbol. &len; is unknown symbol");
+}
+
 SCENARIO("Handle string without html characters")
 {
 	std::string htmlString = "Just some string";

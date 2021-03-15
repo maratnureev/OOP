@@ -8,3 +8,4 @@ void AskForTranslationAndSave(std::string const& lineForTranslation, std::map<st
 void WriteTransations(std::vector<std::string>& translations);
 void HandleWord(std::string const& lineForTranslation, std::map<std::string, std::vector<std::string>>& dictionary);
 void LaunchTranslator(std::map<std::string, std::vector<std::string>>& dictionary);
+void SaveDictionary(std::map<std::string, std::vector<std::string>>& dictionary, std::string const& dictionaryFileName);

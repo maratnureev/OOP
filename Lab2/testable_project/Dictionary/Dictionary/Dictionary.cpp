@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include <string>
 #include <optional>
+#include <clocale>
+#include <Windows.h>
 #include "DictionaryHandler.h"
 
 using namespace std;
@@ -24,11 +26,13 @@ optional<Args> ParseArgs(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-    setlocale(LC_ALL, "rus");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    setlocale(LC_ALL, "Russian");
     auto args = ParseArgs(argc, argv);
     if (!args)
         return 1;
     auto dictionary = InitDictionary(args->dictionaryFileName);
     LaunchTranslator(dictionary);
-
+    SaveDictionary(dictionary, args->dictionaryFileName);
 }
