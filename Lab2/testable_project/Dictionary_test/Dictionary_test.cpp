@@ -1,20 +1,103 @@
-﻿// Dictionary_test.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <vector>
+#include <string>
+#include <map>
+#include <iosfwd>
 
-#include <iostream>
 
-int main()
+#define CATCH_CONFIG_MAIN
+#include "../../../catch2/catch.hpp"
+
+#include "../Dictionary/Dictionary/DictionaryHandler.h"
+
+using namespace std;
+
+SCENARIO("Handle word in empty dictionary, translation not added")
 {
-    std::cout << "Hello World!\n";
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	setlocale(LC_ALL, "Russian");
+
+	string lineForTranslation = "testWord";
+	map<string, vector<string>> dictionary;
+
+	istringstream input("");
+	cin.rdbuf(input.rdbuf());
+
+	bool isEdited = false;
+	HandleWord(lineForTranslation, dictionary, isEdited);
+
+	REQUIRE(dictionary["testword"].empty());
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+SCENARIO("Handle word in empty dictionary, translation added")
+{
+	string lineForTranslation = "testWord";
+	vector<string> translations = { "Перевод" };
+	map<string, vector<string>> dictionary;
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+	istringstream input("Перевод");
+	cin.rdbuf(input.rdbuf());
+	bool isEdited = false;
+	HandleWord(lineForTranslation, dictionary, isEdited);
+	
+	REQUIRE(dictionary["testword"] == translations);
+}
+
+
+SCENARIO("Given word is translated with case missmatch")
+{
+	string lineForTranslation = "testWord";
+	vector<string> translations = { "Перевод" };
+	map<string, vector<string>> dictionary;
+	dictionary["testword"] = translations;
+
+	stringstream input("Перевод");
+	cin.rdbuf(input.rdbuf());
+	bool isEdited = false;
+	HandleWord(lineForTranslation, dictionary, isEdited);
+
+	REQUIRE(dictionary["testword"] == translations);
+}
+
+SCENARIO("Save dictionary file if dictionary changed")
+{
+	string lineForTranslation = "testWord";
+	vector<string> translations = { "Перевод" };
+	map<string, vector<string>> dictionary;
+	string expected = "testword=Перевод";
+	dictionary["testword"] = translations;
+
+	stringstream input("Y");
+	cin.rdbuf(input.rdbuf());
+	bool isEdited = false;
+	SaveDictionary(dictionary, "dict.txt");
+
+	ifstream dictIn("dict.txt");
+	string output;
+	getline(dictIn, output);
+
+	REQUIRE(expected == output);
+}
+
+SCENARIO("Do not save dictionary file if dictionary changed")
+{
+	ofstream dictOut("dict.txt");
+	string lineForTranslation = "testWord";
+	vector<string> translations = { "Перевод" };
+	map<string, vector<string>> dictionary;
+	string expected = "";
+	dictOut << expected;
+	dictionary["testword"] = translations;
+	dictOut.close();
+
+	stringstream input("N");
+	cin.rdbuf(input.rdbuf());
+	bool isEdited = false;
+	SaveDictionary(dictionary, "dict.txt");
+
+	ifstream dictIn("dict.txt");
+	string output;
+	getline(dictIn, output);
+
+	REQUIRE(expected == output);
+}

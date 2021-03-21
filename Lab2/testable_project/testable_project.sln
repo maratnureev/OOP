@@ -15,6 +15,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dictionary", "Dictionary\Di
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dictionary_test", "Dictionary_test\Dictionary_test.vcxproj", "{97699FD5-E5B5-4E85-8E9D-2623C7C3C5D0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Set", "Set\Set.vcxproj", "{E938B069-F744-4978-BFEA-3C0EA606A259}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Set_tests", "Set_tests\Set_tests.vcxproj", "{62515CF6-BA9A-4F4E-8AAD-7C0E844F30E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -71,6 +75,22 @@ Global
 		{97699FD5-E5B5-4E85-8E9D-2623C7C3C5D0}.Release|x64.Build.0 = Release|x64
 		{97699FD5-E5B5-4E85-8E9D-2623C7C3C5D0}.Release|x86.ActiveCfg = Release|Win32
 		{97699FD5-E5B5-4E85-8E9D-2623C7C3C5D0}.Release|x86.Build.0 = Release|Win32
+		{E938B069-F744-4978-BFEA-3C0EA606A259}.Debug|x64.ActiveCfg = Debug|x64
+		{E938B069-F744-4978-BFEA-3C0EA606A259}.Debug|x64.Build.0 = Debug|x64
+		{E938B069-F744-4978-BFEA-3C0EA606A259}.Debug|x86.ActiveCfg = Release|Win32
+		{E938B069-F744-4978-BFEA-3C0EA606A259}.Debug|x86.Build.0 = Release|Win32
+		{E938B069-F744-4978-BFEA-3C0EA606A259}.Release|x64.ActiveCfg = Release|x64
+		{E938B069-F744-4978-BFEA-3C0EA606A259}.Release|x64.Build.0 = Release|x64
+		{E938B069-F744-4978-BFEA-3C0EA606A259}.Release|x86.ActiveCfg = Release|Win32
+		{E938B069-F744-4978-BFEA-3C0EA606A259}.Release|x86.Build.0 = Release|Win32
+		{62515CF6-BA9A-4F4E-8AAD-7C0E844F30E4}.Debug|x64.ActiveCfg = Debug|x64
+		{62515CF6-BA9A-4F4E-8AAD-7C0E844F30E4}.Debug|x64.Build.0 = Debug|x64
+		{62515CF6-BA9A-4F4E-8AAD-7C0E844F30E4}.Debug|x86.ActiveCfg = Debug|Win32
+		{62515CF6-BA9A-4F4E-8AAD-7C0E844F30E4}.Debug|x86.Build.0 = Debug|Win32
+		{62515CF6-BA9A-4F4E-8AAD-7C0E844F30E4}.Release|x64.ActiveCfg = Release|x64
+		{62515CF6-BA9A-4F4E-8AAD-7C0E844F30E4}.Release|x64.Build.0 = Release|x64
+		{62515CF6-BA9A-4F4E-8AAD-7C0E844F30E4}.Release|x86.ActiveCfg = Release|Win32
+		{62515CF6-BA9A-4F4E-8AAD-7C0E844F30E4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

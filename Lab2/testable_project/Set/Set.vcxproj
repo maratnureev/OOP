@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{97699fd5-e5b5-4e85-8e9d-2623c7c3c5d0}</ProjectGuid>
-    <RootNamespace>Dictionarytest</RootNamespace>
+    <ProjectGuid>{e938b069-f744-4978-bfea-3c0ea606a259}</ProjectGuid>
+    <RootNamespace>Set</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -147,11 +147,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Dictionary\Dictionary\DictionaryHandler.cpp" />
-    <ClCompile Include="Dictionary_test.cpp" />
+    <ClCompile Include="PrimeNumbers.cpp" />
+    <ClCompile Include="Set.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Dictionary\Dictionary\DictionaryHandler.h" />
+    <ClInclude Include="PrimeNumbers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Dictionary_test.cpp">
+    <ClCompile Include="Set_tests.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\Dictionary\Dictionary\DictionaryHandler.cpp">
+    <ClCompile Include="..\Set\PrimeNumbers.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Dictionary\Dictionary\DictionaryHandler.h">
+    <ClInclude Include="..\Set\PrimeNumbers.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

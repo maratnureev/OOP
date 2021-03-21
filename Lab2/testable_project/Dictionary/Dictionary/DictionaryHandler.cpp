@@ -42,24 +42,19 @@ map<string, vector<string>>InitDictionary(string const& dictionaryFileName)
     return dictionary;
 }
 
-void AskForTranslationAndSave(string const& lineForTranslation, string const& lowerCaseTranslation, map<string, vector<string>>& dictionary)
+string AskForTranslation(string const& lineForTranslation)
 {
     string translation;
     cout << "Неизвестное слово '" + lineForTranslation + "'. Введите перевод или пустую строку для отказа.\n";
     getline(cin, translation);
-    if (!translation.empty())
-    {
-        string lowerCaseLine = lineForTranslation;
-        std::transform(lowerCaseLine.begin(), lowerCaseLine.end(), lowerCaseLine.begin(), ::tolower);
-        vector<string> translations = dictionary[lowerCaseLine];
-        translations.push_back(translation);
-        dictionary[lowerCaseLine] = translations;
-        cout << "Слово '" + lineForTranslation + "' сохранено в словаре как '" + translation + "'.\n";
-    }
-    else
-    {
-        cout << "Слово '" << lineForTranslation << "' не сохранено.\n";
-    }
+    return translation;
+}
+
+void SaveTranslation(string const& translation, string const& lowerCaseTranslation, map<string, vector<string>>& dictionary)
+{
+    vector<string> translations = dictionary[lowerCaseTranslation];
+    translations.push_back(translation);
+    dictionary[lowerCaseTranslation] = translations;
 }
 
 void WriteTransations(vector<string>& translations, ostream &out)
@@ -73,34 +68,55 @@ void WriteTransations(vector<string>& translations, ostream &out)
     out << outputString << endl;
 }
 
-void HandleWord(string const& lineForTranslation, map<string, vector<string>>& dictionary)
+void HandleWord(string const& lineForTranslation, map<string, vector<string>>& dictionary, bool isDictionaryEdited)
 {
-    vector<string> translations = dictionary[lineForTranslation];
+    string lowerCaseLine = lineForTranslation;
+    std::transform(lowerCaseLine.begin(), lowerCaseLine.end(), lowerCaseLine.begin(), ::tolower);
+    vector<string> translations = dictionary[lowerCaseLine];
     if (translations.empty())
-        AskForTranslationAndSave(lineForTranslation, dictionary);
+    {
+        string translation = AskForTranslation(lineForTranslation);
+        if (!translation.empty())
+        {
+            isDictionaryEdited = true;
+            SaveTranslation(translation, lowerCaseLine, dictionary);
+            cout << "Слово '" << lineForTranslation << "' сохранено в словаре как '" << translation << "'.\n";
+        }
+        else
+            cout << "Слово '" << lineForTranslation << "' не сохранено.\n";
+    }
     else
         WriteTransations(translations, cout);
 }
 
 void SaveDictionary(map<string, vector<string>>& dictionary, string const& dictionaryFileName)
 {
-    ofstream out(dictionaryFileName, std::ofstream::trunc);
-    for (auto& word : dictionary)
+    cout << "В словарь были внесены изменения. Введите Y или y для сохранения перед выходом.";
+    string needSaving;
+    getline(cin, needSaving);
+    if ((needSaving == "y") || (needSaving == "Y"))
     {
-        out << word.first << '=';
-        WriteTransations(word.second, out);
+        ofstream out(dictionaryFileName, std::ofstream::trunc);
+        for (auto& word : dictionary)
+        {
+            out << word.first << '=';
+            WriteTransations(word.second, out);
+        }
+        cout << "Изменения сохранены. До свидания.";
     }
 }
 
-void LaunchTranslator(map<string, vector<string>>& dictionary)
+bool LaunchTranslator(map<string, vector<string>>& dictionary)
 {
     string lineForTranslation;
-
+    bool isDictionaryTranslated = false;
     while (true)
     {
-        cin >> lineForTranslation;
+        getline(cin, lineForTranslation);
         if (lineForTranslation == "...")
             break;
-        HandleWord(lineForTranslation, dictionary);
+        HandleWord(lineForTranslation, dictionary, isDictionaryTranslated);
     }
+
+    return isDictionaryTranslated;
 }

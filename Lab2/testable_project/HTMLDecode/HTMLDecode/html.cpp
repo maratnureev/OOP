@@ -11,8 +11,8 @@
 using namespace std;
 
 typedef regex_token_iterator<const char*> Iterator;
-//TOdO
-string DecodeStringIfHtmlCode(string symbolCode)
+
+string DecodeStringIfHtmlCode(string const& symbolCode)
 {
     if (symbolCode == "&lt;")
         return "<";
@@ -44,8 +44,7 @@ string HtmlDecode(string const& html)
     const char* tempHtml = html.c_str();
     vector<string>htmlParts;
     Iterator::regex_type rx("(&lt;)|(&gt;)|(&quot;)|(&amp;)|(&apos;)");
-    //TODO заменить strlen yf html.length()
-    Iterator next(tempHtml, tempHtml + strlen(tempHtml), rx);
+    Iterator next(tempHtml, tempHtml + html.length(), rx);
     Iterator end;
 
     string decodedString;
