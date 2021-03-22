@@ -33,8 +33,10 @@ int main(int argc, char* argv[])
     if (!args)
         return 1;
     auto dictionary = InitDictionary(args->dictionaryFileName);
-    bool isDictionaryEdited = LaunchTranslator(dictionary);
-    if (isDictionaryEdited)
+    auto startDictionary(dictionary);
+
+    LaunchTranslator(dictionary);
+    if (startDictionary != dictionary)
     {
         SaveDictionary(dictionary, args->dictionaryFileName);
     }

@@ -23,8 +23,7 @@ SCENARIO("Handle word in empty dictionary, translation not added")
 	istringstream input("");
 	cin.rdbuf(input.rdbuf());
 
-	bool isEdited = false;
-	HandleWord(lineForTranslation, dictionary, isEdited);
+	HandleWord(lineForTranslation, dictionary);
 
 	REQUIRE(dictionary["testword"].empty());
 }
@@ -38,7 +37,7 @@ SCENARIO("Handle word in empty dictionary, translation added")
 	istringstream input("Перевод");
 	cin.rdbuf(input.rdbuf());
 	bool isEdited = false;
-	HandleWord(lineForTranslation, dictionary, isEdited);
+	HandleWord(lineForTranslation, dictionary);
 	
 	REQUIRE(dictionary["testword"] == translations);
 }
@@ -53,9 +52,8 @@ SCENARIO("Given word is translated with case missmatch")
 
 	stringstream input("Перевод");
 	cin.rdbuf(input.rdbuf());
-	bool isEdited = false;
-	HandleWord(lineForTranslation, dictionary, isEdited);
-
+	HandleWord(lineForTranslation, dictionary);
+	
 	REQUIRE(dictionary["testword"] == translations);
 }
 
@@ -69,7 +67,6 @@ SCENARIO("Save dictionary file if dictionary changed")
 
 	stringstream input("Y");
 	cin.rdbuf(input.rdbuf());
-	bool isEdited = false;
 	SaveDictionary(dictionary, "dict.txt");
 
 	ifstream dictIn("dict.txt");

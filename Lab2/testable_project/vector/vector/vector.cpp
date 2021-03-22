@@ -13,13 +13,9 @@ using namespace std;
 
 vector<double> ReadVector()
 {
-    //TODO: проверять является ли числом
     vector<double> floatNumbers;
-    string tempString;
-    getline(cin, tempString);
     double number = 0;
-    istringstream tempStream(tempString);
-    while (tempStream >> number)
+    while (cin >> number)
         floatNumbers.push_back(number);
     return floatNumbers;
 }
@@ -37,7 +33,8 @@ void CalculateVector(vector<double>& floatNumbers)
         auto multiplyNumber{
             [minValue](double firstMult) -> double
             {
-                return minValue * firstMult;
+                auto result = minValue * firstMult;
+                return round(result * 1000) / 1000;
             }
         };
         transform(floatNumbers.begin(), floatNumbers.end(), floatNumbers.begin(), multiplyNumber);
