@@ -15,7 +15,7 @@ std::set<int> GeneratePrimeNumbersSet(int upperBound, bool& wasError)
     std::vector<bool> prime(upperBound + 1, true);
     std::vector<int> smallestPrimeFactor(upperBound + 1);
     prime[0] = prime[1] = false;
-    for (int i = 2; i < upperBound; i++)
+    for (int i = 2; i <= upperBound; i++)
     {
         if (prime[i])
         {
@@ -26,7 +26,7 @@ std::set<int> GeneratePrimeNumbersSet(int upperBound, bool& wasError)
 
         auto setElement = *primeSetIt;
 
-        for (int j = 0; j < primeSet.size() && i * setElement < upperBound && setElement <= smallestPrimeFactor[i]; j++)
+        for (int j = 0; j < primeSet.size() && i * setElement <= upperBound && setElement <= smallestPrimeFactor[i]; j++)
         {
             prime[i * setElement] = false;
             smallestPrimeFactor[i * setElement] = setElement;
