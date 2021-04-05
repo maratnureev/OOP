@@ -12,8 +12,8 @@ std::set<int> GeneratePrimeNumbersSet(int upperBound, bool& wasError)
         wasError = true;
         return primeSet;
     }
-    std::vector<bool> prime(upperBound + 1, true);
-    std::vector<int> smallestPrimeFactor(upperBound + 1);
+    std::vector<bool> prime(upperBound +1, true);
+    std::vector<int> smallestPrimeFactor(upperBound +1);
     prime[0] = prime[1] = false;
     for (int i = 2; i <= upperBound; i++)
     {

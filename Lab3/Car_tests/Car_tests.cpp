@@ -2,6 +2,11 @@
 #include "../../catch2/catch.hpp"
 
 #include "../Car/CCar.h"
+#include "../Car/CRemoteControl.h"
+#include "../Car/Exceptions.h"
+
+#include <string>
+#include <sstream>
 
 SCENARIO("Test car creation")
 {
@@ -102,7 +107,7 @@ SCENARIO("Test turn on -1 gear with -10 speed and 0 gear")
 	car.TurnOnEngine();
 	car.SetGear(-1);
 	std::string message;
-	car.SetSpeed(-10);
+	car.SetSpeed(10);
 	car.SetGear(0);
 	REQUIRE_THROWS(car.SetGear(-1));
 	int gear = car.GetGear();
@@ -241,5 +246,66 @@ SCENARIO("Test turn engine off on gear 0 with speed 90")
 	REQUIRE(speed == 90);
 }
 
+SCENARIO("Test set 9 speed with -10 speed on gear 0")
+{
+	CCar car;
+	car.TurnOnEngine();
+	car.SetGear(-1);
+	std::string message;
+	car.SetSpeed(10);
+	car.SetGear(0);
+	REQUIRE_NOTHROW(car.SetSpeed(9));
+	int gear = car.GetGear();
+	int speed = car.GetSpeed();
+	bool isEngineTurnedOn = car.IsTurnedOn();
+	REQUIRE(isEngineTurnedOn);
+	REQUIRE(gear == 0);
+	REQUIRE(speed == 9);
+}
+
+SCENARIO("Test set 20 speed with 10 speed on gear 0")
+{
+	CCar car;
+	car.TurnOnEngine();
+	car.SetGear(1);
+	std::string message;
+	car.SetSpeed(10);
+	car.SetGear(0);
+	REQUIRE_THROWS(car.SetSpeed(20));
+	int gear = car.GetGear();
+	int speed = car.GetSpeed();
+	bool isEngineTurnedOn = car.IsTurnedOn();
+	REQUIRE(isEngineTurnedOn);
+	REQUIRE(gear == 0);
+	REQUIRE(speed == 10);
+}
+
+SCENARIO("Test set 40 speed with 0 speed on gear 1")
+{
+	CCar car;
+	car.TurnOnEngine();
+	car.SetGear(1);
+	std::string message;
+	REQUIRE_THROWS(car.SetSpeed(40));
+	int gear = car.GetGear();
+	int speed = car.GetSpeed();
+	bool isEngineTurnedOn = car.IsTurnedOn();
+	REQUIRE(isEngineTurnedOn);
+	REQUIRE(gear == 1);
+	REQUIRE(speed == 0);
+}
 
 
+SCENARIO("Test set -2 gear with 0 speed on gear 1")
+{
+	CCar car;
+	car.TurnOnEngine();
+	std::string message;
+	REQUIRE_THROWS(car.SetGear(-2));
+	int gear = car.GetGear();
+	int speed = car.GetSpeed();
+	bool isEngineTurnedOn = car.IsTurnedOn();
+	REQUIRE(isEngineTurnedOn);
+	REQUIRE(gear == 0);
+	REQUIRE(speed == 0);
+}

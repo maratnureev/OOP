@@ -146,10 +146,12 @@
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="CCar.cpp" />
     <ClCompile Include="CRemoteControl.cpp" />
+    <ClCompile Include="Exceptions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCar.h" />
     <ClInclude Include="CRemoteControl.h" />
+    <ClInclude Include="Exceptions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

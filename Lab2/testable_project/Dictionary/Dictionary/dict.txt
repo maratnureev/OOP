@@ -1,4 +1,6 @@
-cat=кот,   кошка
+cat=кот,    кошка
+hello=привет
 house=дом
 red=
 redx=
+the red square=красная площадь

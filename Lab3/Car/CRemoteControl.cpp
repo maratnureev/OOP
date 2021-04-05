@@ -1,5 +1,6 @@
 #include "CRemoteControl.h"
 #include "CCar.h"
+#include "Exceptions.h"
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -18,8 +19,8 @@ CRemoteControl::CRemoteControl(CCar& car, std::istream& input, std::ostream& out
 		   } },
 		  { "EngineOff", bind(&CRemoteControl::EngineOff, this, std::placeholders::_1) },
 		  { "Info", bind(&CRemoteControl::Info, this, _1) },
-		  { "SetSpeed", bind(&CRemoteControl::SetGear, this, _1) },
-		  { "SetGear", bind(&CRemoteControl::SetSpeed, this, _1) },
+		  { "SetSpeed", bind(&CRemoteControl::SetSpeed, this, _1) },
+		  { "SetGear", bind(&CRemoteControl::SetGear, this, _1) },
 		})
 {
 }
@@ -56,9 +57,9 @@ CRemoteControl::CRemoteControl(CCar& car, std::istream& input, std::ostream& out
 				   m_car.TurnOffEngine();
 				   m_output << "Car's engine is turned off" << endl;
 			   }
-			   catch (string message)
+			   catch (const InvalidEngineOffStateException& e)
 			   {
-				   m_output << message << endl;
+				   m_output << e.GetMessage() << endl;
 			   }
 			   return true;
 		   }
@@ -78,7 +79,7 @@ CRemoteControl::CRemoteControl(CCar& car, std::istream& input, std::ostream& out
 			   return true;
 		   }
 
-		   bool CRemoteControl::SetGear(std::istream& args)
+		   bool CRemoteControl::SetSpeed(std::istream& args)
 		   {
 			   int speed;
 			   args >> speed;
@@ -87,14 +88,14 @@ CRemoteControl::CRemoteControl(CCar& car, std::istream& input, std::ostream& out
 				   m_car.SetSpeed(speed);
 				   m_output << "Speed set to " + to_string(speed) << endl;
 			   }
-			   catch (string message)
+			   catch (const InvalidSpeedException& e)
 			   {
-				   cout << message << endl;
+				   cout << e.GetMessage() << endl;
 			   }
 			   return true;
 		   }
 
-		   bool CRemoteControl::SetSpeed(std::istream& args)
+		   bool CRemoteControl::SetGear(std::istream& args)
 		   {
 			   int gear;
 			   args >> gear;
@@ -103,9 +104,9 @@ CRemoteControl::CRemoteControl(CCar& car, std::istream& input, std::ostream& out
 				   m_car.SetGear(gear);
 				   m_output << "Gear set to " + to_string(gear) << endl;
 			   }
-			   catch (string message)
+			   catch (const InvalidGearException& e)
 			   {
-				   cout << message << endl;
+				   cout << e.GetMessage() << endl;
 			   }
 			   return true;
 		   }

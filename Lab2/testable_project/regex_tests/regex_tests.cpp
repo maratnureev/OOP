@@ -104,9 +104,9 @@ SCENARIO("Valid url with ftp protocol")
 	REQUIRE(host == "www.mysite.com");
 }
 
-SCENARIO("Invalid url without protocol")
+SCENARIO("Invalid url with invalid port")
 {
-	std::string url = "www.mysite.com";
+	std::string url = "www.mysite.com:0";
 	std::string host;
 	int port = -1;
 	std::string protocol;
@@ -115,13 +115,79 @@ SCENARIO("Invalid url without protocol")
 	REQUIRE(!isValid);
 }
 
-SCENARIO("Invalid url without protocol 2")
+SCENARIO("Invalid url with invalid port 2")
 {
-	std::string url = "www.mysite.com";
+	std::string url = "https://www.mysite.com:65536";
 	std::string host;
 	int port = -1;
 	std::string protocol;
 	std::string document;
 	bool isValid = ParseURL(url, protocol, port, host, document);
 	REQUIRE(!isValid);
+}
+
+SCENARIO("Invalid url with 2 ports")
+{
+	std::string url = "https://www.mysite.com:8000:123";
+	std::string host;
+	int port = -1;
+	std::string protocol;
+	std::string document;
+	bool isValid = ParseURL(url, protocol, port, host, document);
+	REQUIRE(!isValid);
+}
+
+SCENARIO("Invalid url with 2 protocols and 2 ports")
+{
+	std::string url = "https://https://www.mysite.com:8000:123";
+	std::string host;
+	int port = -1;
+	std::string protocol;
+	std::string document;
+	bool isValid = ParseURL(url, protocol, port, host, document);
+	REQUIRE(!isValid);
+}
+
+SCENARIO("Invalid url")
+{
+	std::string url = "https:///www.mysite.com:8000:123";
+	std::string host;
+	int port = -1;
+	std::string protocol;
+	std::string document;
+	bool isValid = ParseURL(url, protocol, port, host, document);
+	REQUIRE(!isValid);
+}
+
+SCENARIO("Valid url with capital protocol")
+{
+	std::string url = "HTTPS://www.mysite.com:8000";
+	std::string host;
+	int port = -1;
+	std::string protocol;
+	std::string document;
+	bool isValid = ParseURL(url, protocol, port, host, document);
+	REQUIRE(isValid);
+}
+
+SCENARIO("Valid port 1")
+{
+	std::string url = "HTTPS://www.mysite.com:1";
+	std::string host;
+	int port = -1;
+	std::string protocol;
+	std::string document;
+	bool isValid = ParseURL(url, protocol, port, host, document);
+	REQUIRE(isValid);
+}
+
+SCENARIO("Valid port 65535")
+{
+	std::string url = "HTTPS://www.mysite.com:65535";
+	std::string host;
+	int port = -1;
+	std::string protocol;
+	std::string document;
+	bool isValid = ParseURL(url, protocol, port, host, document);
+	REQUIRE(isValid);
 }

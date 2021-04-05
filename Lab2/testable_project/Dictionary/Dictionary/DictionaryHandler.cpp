@@ -98,7 +98,6 @@ void SaveDictionary(map<string, vector<string>>& dictionary, string const& dicti
 	getline(cin, needSaving);
 	if ((needSaving == "y") || (needSaving == "Y"))
 	{
-		//TODO: выделить функцию сохранения словаря
 		ofstream out(dictionaryFileName, std::ofstream::trunc);
 		for (auto& word : dictionary)
 		{
