@@ -11,6 +11,8 @@ CCar::CCar()
 {
 }
 
+
+
 struct SpeedLimit {
 	int minSpeed;
 	int maxSpeed;
@@ -58,13 +60,13 @@ bool CCar::IsTurnedOn() const
 	return m_isEngineTurnedOn;
 }
 
-std::string CCar::GetDirection() const
+CCar::Directions CCar::GetDirection() const
 {
 	if (m_speed > 0)
-		return "forward";
+		return FORWARD;
 	if (m_speed == 0)
-		return "stay";
-	return "backward";
+		return BACKWARD;
+	return STAY;
 }
 
 int CCar::GetSpeed() const

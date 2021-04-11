@@ -69,10 +69,23 @@ bool CRemoteControl::Info(std::istream&)
 	int gear = m_car.GetGear();
 	int speed = m_car.GetSpeed();
 	bool isTurnedOn = m_car.IsTurnedOn();
-	std::string direction = m_car.GetDirection();
+	CCar::Directions direction = m_car.GetDirection();
 			   
+	string directionStr;
+	switch (direction)
+	{
+	case CCar::FORWARD:
+		directionStr = "forward";
+		break;
+	case CCar::BACKWARD:
+		directionStr = "backward";
+		break;
+	case CCar::STAY:
+		directionStr = "stay";
+		break;
+	}
 	string info = (isTurnedOn)
-		? ("Car's engine is turned on\nGear is: " + to_string(gear) + "\nSpeed is: " + to_string(speed) + "\nDirection is: " + direction + "\n" )
+		? ("Car's engine is turned on\nGear is: " + to_string(gear) + "\nSpeed is: " + to_string(speed) + "\nDirection is: " + directionStr + "\n" )
 		: "Car's engine is turned off\n";
 	m_output << info;
 			   
