@@ -1,0 +1,5 @@
+Compound body A:
+	Sphere:
+	Cone
+	Compound body B:
+		
