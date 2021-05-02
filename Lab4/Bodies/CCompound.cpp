@@ -15,7 +15,6 @@ double CCompound::GetVolume() const
 	{
 		double childVolume = child->GetVolume();
 		volume += childVolume;
-		return volume;
 	}
 	return volume;
 }
@@ -27,7 +26,6 @@ double CCompound::GetMass() const
 	{
 		double childMass = child->GetMass();
 		mass += childMass;
-		return mass;
 	}
 	return mass;
 }
@@ -43,11 +41,10 @@ std::vector<CBody*> CCompound::GetChilds() const
 }
 
 
-bool CCompound::AddChildBody(CBody* child)
+void CCompound::AddChildBody(CBody* child)
 {
 	AssertChildValid(child);
 	m_childs.push_back(child);
-	return true;
 }
 
 void CCompound::AppendProperties(std::ostream& strm) const
@@ -55,7 +52,7 @@ void CCompound::AppendProperties(std::ostream& strm) const
 	strm << "\tCompound object:\n";
 	for (const auto appendedChild : m_childs)
 	{
-		strm << appendedChild->ToString();
+		strm << "\t" << appendedChild->ToString();
 	}
 }
 

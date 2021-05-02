@@ -2,14 +2,10 @@
 #include "Exception.h"
 #include <string>
 
-const double WATER_DENSITY = 1000;
-const double GRAVITY = 9.81;
-
 CBody::CBody(const std::string& type, double density) 
 	: m_density(density)
 	, m_type(type)
 {
-	AssertBodyParameterValid(density);
 }
 
 double CBody::GetDensity() const
@@ -20,11 +16,6 @@ double CBody::GetDensity() const
 double CBody::GetMass() const
 {
 	return GetVolume() * GetDensity();
-}
-
-double CBody::getArchimedPower() const
-{
-	return (GetDensity() - WATER_DENSITY) * GRAVITY * GetVolume();
 }
 
 std::string CBody::ToString() const

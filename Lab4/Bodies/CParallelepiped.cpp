@@ -11,6 +11,7 @@ CParallelepiped::CParallelepiped(double width, double height, double depth, doub
 	AssertBodyParameterValid(depth);
 	AssertBodyParameterValid(height);
 	AssertBodyParameterValid(width);
+	AssertBodyParameterValid(density);
 }
 
 double CParallelepiped::GetDepth() const

@@ -11,7 +11,7 @@ public:
 	double GetMass() const override;
 	double GetDensity() const override;
 	std::vector<CBody*> GetChilds() const;
-	bool AddChildBody(CBody* child);
+	void AddChildBody(CBody* child);
 
 private:
 	void AppendProperties(std::ostream& strm) const override;

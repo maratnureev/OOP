@@ -12,7 +12,7 @@ public:
 	virtual double GetDensity() const;
 	virtual double GetVolume() const = 0;
 	virtual double GetMass() const;
-	double getArchimedPower() const;
+	double GetArchimedPower() const;
 	std::string ToString() const;
 
 	void AssertBodyParameterValid(double param);

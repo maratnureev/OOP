@@ -31,9 +31,9 @@ struct Error {
 Error setError(string message)
 {
     Error err;
-err.message = message;
-err.wasError = true;
-return err;
+    err.message = message;
+    err.wasError = true;
+    return err;
 }
 
 optional<Args> ParseArgs(int argc, char* argv[])

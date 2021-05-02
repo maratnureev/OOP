@@ -109,7 +109,7 @@ bool CRemoteControl::CreateFunction(std::istream& args)
 	{
 		if (deliminator == '\0')
 		{
-			m_calc.CreateFunction(stringParts[0], functionMembers[0], "", '\0');
+			m_calc.CreateFunction(stringParts[0], functionMembers[0]);
 		}
 		else
 		{

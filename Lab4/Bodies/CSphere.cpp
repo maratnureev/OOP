@@ -6,6 +6,7 @@ CSphere::CSphere(double density, double radius)
 	, m_radius(radius)
 {
 	AssertBodyParameterValid(radius);
+	AssertBodyParameterValid(density);
 }
 
 double CSphere::GetRadius() const

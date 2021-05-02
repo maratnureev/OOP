@@ -10,6 +10,8 @@
 #include <iostream>
 #include <sstream>
 
+const double WATER_DENSITY = 1000;
+const double GRAVITY = 9.81;
 
 using namespace std;
 using namespace std::placeholders;
@@ -188,6 +190,11 @@ bool BodiesController::AddChildToCompound(std::istream& args)
 
 bool BodiesController::Info(std::istream& args) const 
 {
+	if (m_bodyMap.empty())
+	{
+		m_output << "There are no bodies in the controller\n";
+		return true;
+	}
 	for (const auto pair : m_bodyMap)
 	{
 		m_output << "Body name: " << pair.first << endl;
@@ -232,13 +239,18 @@ void BodiesController::PrintLowerArchimedPowerBodyName() const
 
 	for (const auto pair : m_bodyMap)
 	{
-		if (isnan(minArchimedPower) || minArchimedPower > pair.second->GetMass())
+		if (isnan(minArchimedPower) || minArchimedPower > GetArchimedPower(pair.second))
 		{
-			minArchimedPower = pair.second->GetMass();
+			minArchimedPower = GetArchimedPower(pair.second);
 			minArchimedPowerBodyName = pair.first;
 		}
 	}
 
 	m_output << "Lower Archimed power body: " << minArchimedPowerBodyName << endl;
 	m_output << m_bodyMap.at(minArchimedPowerBodyName)->ToString();
+}
+
+double GetArchimedPower(CBody* body)
+{
+	return (body->GetDensity() - WATER_DENSITY) * GRAVITY * body->GetVolume();
 }

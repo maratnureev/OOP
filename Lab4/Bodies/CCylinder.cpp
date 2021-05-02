@@ -22,7 +22,7 @@ double CCylinder::GetBaseRadius() const
 
 double CCylinder::GetVolume() const
 {
-	return pow(m_baseRadius, 2) * 3.14 * m_height / 3;
+	return pow(m_baseRadius, 2) * 3.14 * m_height;
 }
 
 void CCylinder::AppendProperties(std::ostream& strm) const

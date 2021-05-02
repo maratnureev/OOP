@@ -11,8 +11,6 @@ CCar::CCar()
 {
 }
 
-
-
 struct SpeedLimit {
 	int minSpeed;
 	int maxSpeed;

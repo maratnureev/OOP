@@ -15,7 +15,6 @@ private:
 	void AppendProperties(std::ostream& strm) const override;
 	double m_baseRadius;
 	double m_height;
-	double m_density;
 };
 
 
