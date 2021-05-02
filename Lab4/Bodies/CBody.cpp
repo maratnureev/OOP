@@ -5,6 +5,7 @@
 CBody::CBody(const std::string& type, double density) 
 	: m_density(density)
 	, m_type(type)
+	, m_parent(nullptr)
 {
 }
 
@@ -16,6 +17,18 @@ double CBody::GetDensity() const
 double CBody::GetMass() const
 {
 	return GetVolume() * GetDensity();
+}
+
+void CBody::SetParentBody(CBody* parent)
+{
+	if (m_parent != nullptr)
+		throw InvalidParameterException("Body can have only 1 parent");
+	m_parent = parent;
+}
+
+CBody* CBody::GetParentBody() const
+{
+	return m_parent;
 }
 
 std::string CBody::ToString() const

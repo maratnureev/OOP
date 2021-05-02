@@ -87,34 +87,18 @@ SCENARIO("Test empty compound creation")
 SCENARIO("Test add child to compound")
 {
 	CCompound compound;
-	auto cone = new CCone(10, 10, 10);
-	REQUIRE_NOTHROW(compound.AddChildBody(cone));
+	std::unique_ptr<CBody> cone = std::make_unique<CCone>(10, 10, 10);
+	auto conePtr = cone.get();
+	REQUIRE_NOTHROW(compound.AddChildBody(std::move(cone)));
 	REQUIRE(compound.GetDensity() == 10);
-	REQUIRE(compound.GetMass() == cone->GetMass());
-	REQUIRE(compound.GetVolume() == cone->GetVolume());
+	REQUIRE(compound.GetMass() == conePtr->GetMass());
+	REQUIRE(compound.GetVolume() == conePtr->GetVolume());
 }
 
 SCENARIO("Test add straight recursive child to compound")
 {
 	auto compound = new CCompound;
-	auto cone = new CCone(10, 10, 10);
-	REQUIRE_THROWS(compound->AddChildBody(compound));
-}
-
-SCENARIO("Test add direct recursive child to compound")
-{
-	auto compound = new CCompound;
-	REQUIRE_THROWS(compound->AddChildBody(compound));
-}
-
-SCENARIO("Test add indirect recursive child to compound")
-{
-	auto compound1 = new CCompound;
-	auto compound2 = new CCompound;
-	auto compound3 = new CCompound;
-	compound3->AddChildBody(compound2);
-	compound2->AddChildBody(compound1);
-	REQUIRE_THROWS(compound1->AddChildBody(compound3));
+	REQUIRE_THROWS(compound->AddChildBody(std::unique_ptr<CBody>(compound)));
 }
 
 SCENARIO("Test add cone bodies controller")

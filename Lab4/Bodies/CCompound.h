@@ -10,12 +10,11 @@ public:
 	double GetVolume() const override;
 	double GetMass() const override;
 	double GetDensity() const override;
-	std::vector<CBody*> GetChilds() const;
-	void AddChildBody(CBody* child);
+	void AddChildBody(std::unique_ptr<CBody> child);
+	void AssertChildValid(CBody* appendedChild) const;
 
 private:
 	void AppendProperties(std::ostream& strm) const override;
-	void AssertChildValid(CBody* appendedChild) const;
-	std::vector<CBody*> m_childs;
+	std::vector<std::unique_ptr<CBody>> m_childs;
 };
 

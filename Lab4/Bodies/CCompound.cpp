@@ -11,7 +11,7 @@ CCompound::CCompound()
 double CCompound::GetVolume() const
 {
 	double volume = 0;
-	for (const auto child : m_childs)
+	for (const auto& child : m_childs)
 	{
 		double childVolume = child->GetVolume();
 		volume += childVolume;
@@ -22,7 +22,7 @@ double CCompound::GetVolume() const
 double CCompound::GetMass() const
 {
 	double mass = 0;
-	for (const auto child : m_childs)
+	for (const auto& child : m_childs)
 	{
 		double childMass = child->GetMass();
 		mass += childMass;
@@ -35,22 +35,17 @@ double CCompound::GetDensity() const
 	return GetMass() / GetVolume();
 }
 
-std::vector<CBody*> CCompound::GetChilds() const
+void CCompound::AddChildBody(std::unique_ptr<CBody> child)
 {
-	return m_childs;
-}
-
-
-void CCompound::AddChildBody(CBody* child)
-{
-	AssertChildValid(child);
-	m_childs.push_back(child);
+	AssertChildValid(child.get());
+	m_childs.push_back(std::move(child));
 }
 
 void CCompound::AppendProperties(std::ostream& strm) const
 {
-	strm << "\tCompound object:\n";
-	for (const auto appendedChild : m_childs)
+	if (!m_childs.empty())
+		strm << "\tCompound object:\n";
+	for (const auto& appendedChild : m_childs)
 	{
 		strm << "\t" << appendedChild->ToString();
 	}
@@ -63,8 +58,7 @@ void CCompound::AssertChildValid(CBody* appendedChild) const
 		return;
 	if (appendedChild == this)
 		throw InvalidChildException(std::string("Can not append object as it's child"));
-	for (auto child : appendedCompoundBody->GetChilds())
-	{
-		AssertChildValid(child);
-	}
+	auto parentBody = dynamic_cast<CCompound*>(GetParentBody());
+	if (parentBody != nullptr)
+		parentBody->AssertChildValid(appendedChild);
 }

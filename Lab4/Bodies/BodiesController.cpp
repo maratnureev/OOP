@@ -150,7 +150,7 @@ bool BodiesController::AddCompound(std::istream& args)
 		m_output << "Invalid body name\n";
 		return true;
 	}
-	m_bodyMap.insert(std::make_pair(name, new CCompound()));
+	m_bodyMap[name] = make_unique<CCompound>();
 	return true;
 }
 
@@ -169,22 +169,23 @@ bool BodiesController::AddChildToCompound(std::istream& args)
 		m_output << "Invalid child name\n";
 		return true;
 	}
-	auto parentCompound = m_bodyMap[parentName];
-	CCompound* parentBody = dynamic_cast<CCompound*>(m_bodyMap.at(parentName));
+	CCompound* parentBody = dynamic_cast<CCompound*>(m_bodyMap[parentName].get());
 	if (parentBody == nullptr)
 	{
 		m_output << "Parent body is not compund\n";
 		return true;
 	}
-	auto childBody = m_bodyMap.at(childName);
+	auto childBody = std::move(m_bodyMap[childName]);
+	childBody->SetParentBody(parentBody);
 	try
 	{
-		parentBody->AddChildBody(childBody);
+		parentBody->AddChildBody(std::move(childBody));
 	}
 	catch (const InvalidChildException& e)
 	{
 		m_output << e.GetMessage() << endl;
 	}
+	m_bodyMap.erase(childName);
 	return true;
 }
 
@@ -195,10 +196,10 @@ bool BodiesController::Info(std::istream& args) const
 		m_output << "There are no bodies in the controller\n";
 		return true;
 	}
-	for (const auto pair : m_bodyMap)
+	for (const auto& pair : m_bodyMap)
 	{
 		m_output << "Body name: " << pair.first << endl;
-		m_output << pair.second->ToString();
+		m_output << pair.second.get()->ToString();
 	}
 	PrintHeighestMassBodyName();
 	PrintLowerArchimedPowerBodyName();
@@ -208,7 +209,7 @@ bool BodiesController::Info(std::istream& args) const
 
 bool BodiesController::IsBodyNameExist(const std::string& name) const 
 {
-	for (const auto pair : m_bodyMap)
+	for (const auto& pair : m_bodyMap)
 		if (pair.first == name)
 			return true;
 	return false;
@@ -216,10 +217,10 @@ bool BodiesController::IsBodyNameExist(const std::string& name) const
 
 void BodiesController::PrintHeighestMassBodyName() const
 {
-	double highestMass = 0;
+	double highestMass = -1;
 	string highestBodyMassName;
 
-	for (const auto pair : m_bodyMap)
+	for (const auto& pair : m_bodyMap)
 	{
 		if (highestMass < pair.second->GetMass())
 		{
@@ -229,7 +230,12 @@ void BodiesController::PrintHeighestMassBodyName() const
 	}
 
 	m_output << "Highest mass body: " << highestBodyMassName << endl;
-	m_output << m_bodyMap.at(highestBodyMassName)->ToString();
+	m_output << m_bodyMap.at(highestBodyMassName).get()->ToString();
+}
+
+double GetArchimedPower(CBody* body)
+{
+	return (body->GetDensity() - WATER_DENSITY) * GRAVITY * body->GetVolume();
 }
 
 void BodiesController::PrintLowerArchimedPowerBodyName() const
@@ -237,20 +243,15 @@ void BodiesController::PrintLowerArchimedPowerBodyName() const
 	double minArchimedPower = NAN;
 	string minArchimedPowerBodyName;
 
-	for (const auto pair : m_bodyMap)
+	for (const auto& pair : m_bodyMap)
 	{
-		if (isnan(minArchimedPower) || minArchimedPower > GetArchimedPower(pair.second))
+		if (isnan(minArchimedPower) || minArchimedPower > GetArchimedPower(pair.second.get()))
 		{
-			minArchimedPower = GetArchimedPower(pair.second);
+			minArchimedPower = GetArchimedPower(pair.second.get());
 			minArchimedPowerBodyName = pair.first;
 		}
 	}
 
 	m_output << "Lower Archimed power body: " << minArchimedPowerBodyName << endl;
 	m_output << m_bodyMap.at(minArchimedPowerBodyName)->ToString();
-}
-
-double GetArchimedPower(CBody* body)
-{
-	return (body->GetDensity() - WATER_DENSITY) * GRAVITY * body->GetVolume();
 }

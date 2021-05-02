@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include <map>
+#include <memory>
 #include "CBody.h"
 
 class BodiesController
@@ -25,9 +26,9 @@ private:
 
 	std::istream& m_input;
 	std::ostream& m_output;
-	std::map<std::string, CBody*> m_bodyMap;
-	void PrintHeighestMassBodyName() const;
+	std::map<std::string, std::unique_ptr<CBody>> m_bodyMap;
 
+	void PrintHeighestMassBodyName() const;
 	void PrintLowerArchimedPowerBodyName() const;
 
 	const ActionMap m_actionMap;
