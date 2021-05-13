@@ -11,6 +11,7 @@ public:
 	double GetMass() const override;
 	double GetDensity() const override;
 	void AddChildBody(std::unique_ptr<CBody> child);
+	//TODO const reference
 	void AssertChildValid(CBody* appendedChild) const;
 
 private:

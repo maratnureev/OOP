@@ -7,6 +7,7 @@ CCone::CCone(double baseRadius, double height, double density)
 {
 	AssertBodyParameterValid(height);
 	AssertBodyParameterValid(baseRadius);
+	//TODO
 	AssertBodyParameterValid(density);
 }
 

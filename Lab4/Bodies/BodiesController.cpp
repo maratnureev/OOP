@@ -43,6 +43,7 @@ bool BodiesController::HandleCommand()
 	auto it = m_actionMap.find(action);
 	if (it != m_actionMap.end())
 	{
+		//TODO: make void methods
 		return it->second(strm);
 	}
 
@@ -58,6 +59,7 @@ bool BodiesController::AddCone(std::istream& args)
 	args >> name >> baseRadius >> height >> density;
 	if (IsBodyNameExist(name))
 	{
+		//TODO redo output
 		m_output << "Invalid body name\n";
 		return true;
 	}
@@ -124,6 +126,7 @@ bool BodiesController::AddCylinder(std::istream& args)
 	double baseRadius = 0;
 	double height = 0;
 	double density = 0;
+	//TODO validate args
 	args >> name >> baseRadius >> height >> density;
 	if (IsBodyNameExist(name))
 	{
@@ -180,12 +183,12 @@ bool BodiesController::AddChildToCompound(std::istream& args)
 	try
 	{
 		parentBody->AddChildBody(std::move(childBody));
+		m_bodyMap.erase(childName);
 	}
 	catch (const InvalidChildException& e)
 	{
 		m_output << e.GetMessage() << endl;
 	}
-	m_bodyMap.erase(childName);
 	return true;
 }
 
@@ -240,12 +243,12 @@ double GetArchimedPower(CBody* body)
 
 void BodiesController::PrintLowerArchimedPowerBodyName() const
 {
-	double minArchimedPower = NAN;
+	double minArchimedPower = DBL_MAX;
 	string minArchimedPowerBodyName;
 
 	for (const auto& pair : m_bodyMap)
 	{
-		if (isnan(minArchimedPower) || minArchimedPower > GetArchimedPower(pair.second.get()))
+		if (minArchimedPower > GetArchimedPower(pair.second.get()))
 		{
 			minArchimedPower = GetArchimedPower(pair.second.get());
 			minArchimedPowerBodyName = pair.first;
