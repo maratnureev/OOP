@@ -1,4 +1,5 @@
 #include "CComplex.h"
+#include <iomanip>
 
 
 CComplex::CComplex(double real, double image)
@@ -28,8 +29,8 @@ double CComplex::GetArgument() const
 	{
 		return tan(m_image / m_real);
 	}
-
-	return NAN;
+	// use optional
+	return double(NAN);
 }
 
 CComplex& CComplex::operator += (const CComplex& a)
@@ -161,8 +162,14 @@ std::ostream& operator<< (std::ostream& out, const CComplex& a)
 
 std::istream& operator>> (std::istream& in, CComplex& a)
 {
-	in >> a.m_real;
-	in >> a.m_image;
+	double real;
+	double image;
+	char plus;
+	in >> real;
+	in >> plus;
+	in >> image;
+	a.m_real = real;
+	a.m_image = image;
 
 	return in;
 }

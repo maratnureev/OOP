@@ -25,6 +25,10 @@ public:
 	const char& operator[] (const size_t index) const;
 	friend std::ostream& operator<< (std::ostream& out, const CMyString& a);
 	friend std::istream& operator>> (std::istream& in, CMyString& a);
+	friend bool operator> (const CMyString& a, const CMyString& b);
+	friend bool operator< (const CMyString& a, const CMyString& b);
+	friend bool operator>= (const CMyString& a, const CMyString& b);
+	friend bool operator<= (const CMyString& a, const CMyString& b);
 
 private:
 	char* m_string;  

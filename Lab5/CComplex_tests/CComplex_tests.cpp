@@ -206,3 +206,20 @@ SCENARIO("Test both parts !=")
 	CComplex b(1.3, 4.6);
 	REQUIRE(a != b);
 }
+
+SCENARIO("Test operator >>")
+{
+	std::istringstream input("1.2 + 4.5i");
+	CComplex a;
+	input >> a;
+	REQUIRE(a.Re() == 1.2);
+	REQUIRE(a.Im() == 4.5);
+}
+
+SCENARIO("Test operator <<")
+{
+	std::ostringstream output("");
+	CComplex a(1.2, 4.5);
+	output << a;
+	REQUIRE(output.str() == "1.2+4.5i");
+}
