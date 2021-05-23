@@ -12,7 +12,7 @@ public:
 	double GetDensity() const override;
 	void AddChildBody(std::unique_ptr<CBody> child);
 	//TODO const reference
-	void AssertChildValid(CBody* appendedChild) const;
+	void AssertChildValid(std::unique_ptr<CBody>& appendedChild) const;
 
 private:
 	void AppendProperties(std::ostream& strm) const override;
