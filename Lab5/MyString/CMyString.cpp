@@ -6,14 +6,7 @@ CMyString::CMyString()
 	: m_string(nullptr)
 	, m_length(0)
 {
-	try
-	{
-		m_string = new char[1];
-	}
-	catch (std::bad_alloc& )
-	{
-		throw StringException("Not enough memory for string creation");
-	}
+	m_string = new char[1];
 	m_string[0] = '\0';
 }
 
@@ -21,28 +14,14 @@ CMyString::CMyString(const char* pString)
 {
 	if (pString == nullptr) 
 	{
-		try
-		{
-			m_string = new char[1];
-		}
-		catch (std::bad_alloc& )
-		{
-			throw StringException("Not enough memory for string creation");
-		}
+		m_string = new char[1];
 		m_string[0] = '\0';
 		m_length = 0;
 	}
 	else 
 	{
 		m_length = strlen(pString);
-		try
-		{
-			m_string = new char[m_length + 1];
-		}
-		catch (std::bad_alloc& )
-		{
-			throw StringException("Not enough memory for string creation");
-		}
+		m_string = new char[m_length + 1];
 		memcpy(m_string, pString, m_length + 1);
 	}
 }
@@ -51,46 +30,22 @@ CMyString::CMyString(const char* pString, size_t length)
 {
 	if (pString == nullptr)
 	{
-		try 
-		{
-			m_string = new char[1];
-		}
-		catch (std::bad_alloc& )
-		{
-			throw StringException("Not enough memory for string creation");
-		}
+		m_string = new char[1];
 		m_string[0] = '\0';
 		m_length = length;
 	}
 	else
 	{
 		m_length = length;
-		try
-		{
-			m_string = new char[length + 1];
-		}
-		catch (std::bad_alloc& )
-		{
-			throw StringException("Not enough memory for string creation");
-		}
+		m_string = new char[length + 1];
 		memcpy(m_string, pString, m_length + 1);
 	}
 }
 
 CMyString::CMyString(CMyString const& other)
 {
-	if (this == &other)
-		throw StringException("Invalid self-asignment");///!!
 	m_length = other.m_length;
-	try
-	{
-		m_string = new char[m_length + 1];
-	}
-	catch (std::bad_alloc& )
-	{
-		throw StringException("Not enough memory for string creation");
-	}
-	
+	m_string = new char[m_length + 1];
 	memcpy(m_string, other.m_string, m_length + 1);
 }
 
@@ -98,35 +53,23 @@ CMyString::CMyString(CMyString&& other)
 {
 	m_length = other.m_length;
 	m_string = other.m_string;
-	other.m_string = nullptr; // Чему будет равна длина строки-донора?
+	delete[] other.m_string;
+	other.m_string = new char[1];
+	other.m_string[0] = 0;
+	other.m_length = 0;
 }
 
 CMyString::CMyString(std::string const& stlString)
 {
-	if (stlString == "") // Зачем этот кейс отдельно нужен?
-	{
-		try
-		{
-			m_string = new char[1];
-		}
-		catch (std::bad_alloc& )
-		{
-			throw StringException("Not enough memory for string creation");
-		}
-		m_string[0] = '\0';
-		m_length = 0;
-	}
-	else
-	{
-		m_length = stlString.length();
-		m_string = new char[m_length + 1];
-		memcpy(m_string, stlString.c_str(), m_length + 1);
-	}
+	
+	m_length = stlString.length();
+	m_string = new char[m_length + 1];
+	memcpy(m_string, stlString.c_str(), m_length + 1);
 }
 
 CMyString::~CMyString()
 {
-	delete m_string;
+	delete[] m_string;
 }
 
 size_t CMyString::GetLength() const
@@ -136,28 +79,27 @@ size_t CMyString::GetLength() const
 
 const char* CMyString::GetStringData() const
 {
-	return m_string; // Что будет возвращать moved-строка? 
+	return m_string;
 }
 
 CMyString operator+(const CMyString& a, const CMyString& b)
 {
 	size_t length = a.m_length + b.m_length;
 	char* resultString;
-	try
-	{
-		 resultString = new char[length + 1];
-	}
-	catch (std::bad_alloc& )
-	{
-		throw StringException("Not enough memory for string creation");
-	}
+	resultString = new char[length + 1];
 	memcpy(resultString, a.m_string, a.m_length);
 	memcpy(resultString + a.m_length, b.m_string, b.m_length + 1);
-
-	CMyString result(resultString, length); // Если выбросится исключение, то resultString утечёт. Лишее копирование
-	delete[] resultString;
-
-	return result;
+	try
+	{
+		CMyString result(resultString, length);
+		delete[] resultString;
+		return result;
+	}
+	catch (std::bad_alloc& e)
+	{
+		delete[] resultString;
+		throw e;
+	}
 }
 
 void CMyString::Clear()
@@ -168,17 +110,8 @@ void CMyString::Clear()
 
 CMyString& CMyString::operator=(const CMyString& a)
 {
-	if (this == &a) // Лучше не надо выбрасывать исключение
-		throw StringException("Invalid self assignment");
-	try
-	{
-		m_string = new char[a.m_length + 1];
-		// Утечка памяти - прежнее содержимое строки
-	}
-	catch (std::bad_alloc&)
-	{
-		throw StringException("Not enough memory for string creation");
-	}
+	delete[] m_string;
+	m_string = new char[a.m_length + 1];
 	memcpy(m_string, a.m_string, a.m_length + 1);
 	m_length = a.m_length;
 	return *this;
@@ -186,28 +119,25 @@ CMyString& CMyString::operator=(const CMyString& a)
 
 CMyString CMyString::SubString(size_t start, size_t length) const
 {
-	// А что если длина выходит за пределы?
+	if (start + length > m_length)
+		throw StringException(std::string("Substring length is more then string length"));
 	char* resultString;
-	try
-	{
-		resultString = new char[length + 1];
-	}
-	catch (std::bad_alloc& )
-	{
-		throw StringException("Not enough memory for string creation");
-	}
+	resultString = new char[length + 1];
 	memcpy(resultString, &m_string[start], length + 1);
+	CMyString str(resultString, length);
 
-	return CMyString(resultString, length); // утечка памяти
+	delete[] resultString;
+
+	return str;
 }
 
 bool operator== (const CMyString& a, const CMyString& b)
 {
-	// У вас канал==канализация
 	size_t minLength = a.m_length > b.m_length ? a.m_length : b.m_length;
 	int result = memcmp(a.m_string, b.m_string, minLength);
-
-	return result == 0;
+	if (result == 0)
+		return a.m_length == b.m_length;
+	return false;
 }
 
 bool operator!= (const CMyString& a, const CMyString& b)
@@ -256,24 +186,25 @@ std::istream& operator>> (std::istream& in, CMyString& a)
 	CMyString inputString;
 	size_t stringLength = 0;
 	char tempChar;
-	char* inputChar = new char[2]; // п=утечка памяти
+	char* inputChar = new char[2];
 	do
 	{
 		in.get(tempChar);
 		inputChar[1] = tempChar;
 		inputString = inputString + inputChar;
 	} while (!isspace(tempChar));
+	delete[] inputChar;
 
 	return in;
 }
 
 bool operator>(const CMyString& a, const CMyString& b)
 {
-	if (a.m_length == b.m_length)
-		return memcmp(a.m_string, b.m_string, a.m_length) == 1;
-
-	// abracadabra > zebra
-	return a.m_length > b.m_length;
+	size_t minLength = a.m_length > b.m_length ? a.m_length : b.m_length;
+	int result = memcmp(a.m_string, b.m_string, minLength);
+	if (result == 0)
+		return a.m_length > b.m_length;
+	return result == 1;
 }
 
 bool operator<(const CMyString& a, const CMyString& b)

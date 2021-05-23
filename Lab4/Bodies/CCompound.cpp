@@ -51,12 +51,12 @@ void CCompound::AppendProperties(std::ostream& strm) const
 	}
 }
 
-void CCompound::AssertChildValid(CBody* appendedChild) const
+void CCompound::AssertChildValid(std::unique_ptr<CBody>& appendedChild) const
 {
-	CCompound* appendedCompoundBody = dynamic_cast<CCompound*>(appendedChild);
+	CCompound* appendedCompoundBody = dynamic_cast<CCompound*>(appendedChild.get());
 	if (appendedCompoundBody == nullptr)
 		return;
-	if (appendedChild == this)
+	if (appendedChild.get() == this)
 		throw InvalidChildException(std::string("Can not append object as it's child"));
 	auto parentBody = dynamic_cast<CCompound*>(GetParentBody());
 	if (parentBody != nullptr)
