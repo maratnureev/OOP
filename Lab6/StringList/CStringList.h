@@ -23,7 +23,7 @@ class CStringList
 	class IteratorBase
 	{
 		friend class IteratorBase<true>;
-	public:
+public:
 		friend class CStringList;
 		using MyType = IteratorBase<IsConst>;
 		using value_type = std::conditional_t<IsConst, const std::string, std::string>;
@@ -89,7 +89,7 @@ class CStringList
 			return *this;
 		}
 		Node* operator->()
-		{
+	{
 			return m_node;
 		}
 
@@ -122,7 +122,8 @@ public:
 
 	std::string& GetBackElement();
 	std::string const& GetBackElement() const;
-	
+	CIterator MakeReverseIterator();
+
 private:
 	size_t m_size = 0;
 	std::unique_ptr<Node> m_firstNode;

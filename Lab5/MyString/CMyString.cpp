@@ -101,6 +101,7 @@ CMyString operator+(const CMyString& a, const CMyString& b)
 		throw e;
 	}
 }
+}
 
 void CMyString::Clear()
 {
@@ -109,11 +110,18 @@ void CMyString::Clear()
 }
 
 CMyString& CMyString::operator=(const CMyString& a)
-{
 	if (a == *this)
 		return *this;
 	delete[] m_string;
 	m_string = new char[a.m_length + 1];
+	{
+		m_string = new char[a.m_length + 1];
+		// Утечка памяти - прежнее содержимое строки
+	}
+	catch (std::bad_alloc&)
+	{
+		throw StringException("Not enough memory for string creation");
+	}
 	memcpy(m_string, a.m_string, a.m_length + 1);
 	m_length = a.m_length;
 	return *this;

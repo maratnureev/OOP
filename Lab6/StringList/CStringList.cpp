@@ -1,3 +1,4 @@
+Ôªø#include "InvalidStringListException.h"
 #include "CStringList.h"
 
 size_t CStringList::GetSize() const
@@ -45,7 +46,7 @@ CStringList::iterator CStringList::begin()
 	return iterator(m_firstNode.get());
 }
 
-CStringList::const_iterator CStringList::Òbegin() const
+CStringList::const_iterator CStringList::—Åbegin() const
 {
 	return const_iterator(m_firstNode.get());
 }
@@ -60,7 +61,7 @@ CStringList::iterator CStringList::end()
 	return iterator(m_lastNode);
 }
 
-CStringList::const_iterator CStringList::Òend() const
+CStringList::const_iterator CStringList::ÔøΩend() const
 {
 	return const_iterator(m_lastNode);
 }
