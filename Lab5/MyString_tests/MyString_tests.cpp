@@ -8,7 +8,7 @@
 
 SCENARIO("Test empty valid string creation")
 {
-	CMyString string;
+ 	CMyString string;
 	auto expected = new char[1];
 	expected[0] = '\0';
 	REQUIRE(string.GetLength() == 0);
@@ -114,7 +114,7 @@ SCENARIO("Test operator [] left side")
 SCENARIO("Test self assignment")
 {
 	CMyString string1("Hello world");
-	REQUIRE_THROWS(string1 = string1);
+	REQUIRE_NOTHROW(string1 = string1);
 }
 
 SCENARIO("Operator = test")
@@ -190,8 +190,20 @@ SCENARIO("test operator <=")
 SCENARIO("test operator >>")
 {
 	CMyString string;
-	std::istringstream input("Hello world");
+	std::istringstream input("Hello ");
 	input >> string;
-	REQUIRE(string.GetLength() == 11);
-	REQUIRE(memcmp(string.GetStringData(), "Hello world", 11) == 0);
+	REQUIRE(string.GetLength() == 5);
+	REQUIRE(memcmp(string.GetStringData(), "Hello", 6) == 0);
 }
+
+SCENARIO("iterator test")
+{
+	CMyString string("Hello world!");
+	auto it = string.begin();
+	REQUIRE(*it == 'H');
+	it++;
+	REQUIRE(*it == 'e');
+	it--;
+	REQUIRE(*it == 'H');
+}
+

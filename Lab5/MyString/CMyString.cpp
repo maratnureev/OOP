@@ -1,5 +1,4 @@
 #include "CMyString.h"
-#include "StringException.h"
 #include <sstream>
 
 CMyString::CMyString()
@@ -49,16 +48,15 @@ CMyString::CMyString(CMyString const& other)
 	memcpy(m_string, other.m_string, m_length + 1);
 }
 
-CMyString::CMyString(CMyString&& other)
+CMyString::CMyString(CMyString&& other) 
 {
 	m_length = other.m_length;
 	m_string = other.m_string;
-	delete[] other.m_string;
 	other.m_string = new char[1];
 	other.m_string[0] = 0;
 	other.m_length = 0;
 }
-
+ 
 CMyString::CMyString(std::string const& stlString)
 {
 	
@@ -69,7 +67,8 @@ CMyString::CMyString(std::string const& stlString)
 
 CMyString::~CMyString()
 {
-	delete[] m_string;
+	m_length = 0;
+	delete m_string;
 }
 
 size_t CMyString::GetLength() const
@@ -101,7 +100,6 @@ CMyString operator+(const CMyString& a, const CMyString& b)
 		throw e;
 	}
 }
-}
 
 void CMyString::Clear()
 {
@@ -110,19 +108,12 @@ void CMyString::Clear()
 }
 
 CMyString& CMyString::operator=(const CMyString& a)
+{
 	if (a == *this)
 		return *this;
-	delete[] m_string;
 	m_string = new char[a.m_length + 1];
-	{
-		m_string = new char[a.m_length + 1];
-		// Утечка памяти - прежнее содержимое строки
-	}
-	catch (std::bad_alloc&)
-	{
-		throw StringException("Not enough memory for string creation");
-	}
-	memcpy(m_string, a.m_string, a.m_length + 1);
+	for (size_t i = 0; i < a.m_length + 1; i++)
+		m_string[i] = a.m_string[i];
 	m_length = a.m_length;
 	return *this;
 }
@@ -181,6 +172,36 @@ const char& CMyString::operator[] (const size_t index) const
 	return m_string[index];
 }
 
+CMyString::iterator CMyString::begin()
+{
+	return iterator(&m_string[0]);
+}
+
+CMyString::const_iterator CMyString::cbegin() const
+{
+	return const_iterator(&m_string[0]);
+}
+
+std::reverse_iterator<CMyString::iterator> CMyString::rbegin()
+{
+	return std::make_reverse_iterator(end());
+}
+
+CMyString::iterator CMyString::end()
+{
+	return iterator(&m_string[m_length]);
+}
+
+CMyString::const_iterator CMyString::cend() const
+{
+	return const_iterator(&m_string[m_length]);
+}
+
+std::reverse_iterator<CMyString::iterator> CMyString::rend()
+{
+	return std::make_reverse_iterator(begin());
+}
+
 std::ostream& operator<< (std::ostream& out, const CMyString& a)
 {
 	for (size_t i = 0; i < a.m_length; i++)
@@ -194,16 +215,19 @@ std::ostream& operator<< (std::ostream& out, const CMyString& a)
 std::istream& operator>> (std::istream& in, CMyString& a)
 {
 	CMyString inputString;
-	size_t stringLength = 0;
 	char tempChar;
-	char* inputChar = new char[2];
-	do
+	char* tempString = new char[2];
+	while (true)
 	{
 		in.get(tempChar);
-		inputChar[1] = tempChar;
-		inputString = inputString + inputChar;
-	} while (!isspace(tempChar));
-	delete[] inputChar;
+		if (isspace(tempChar))
+			break;
+		tempString[0] = tempChar;
+		tempString[1] = '\0';
+		inputString = inputString + tempString;
+	}
+	delete[] tempString;
+	a = inputString;
 
 	return in;
 }

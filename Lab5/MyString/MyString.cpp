@@ -2,10 +2,11 @@
 //
 
 #include <iostream>
+#include <algorithm>
+#include "CMyString.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"

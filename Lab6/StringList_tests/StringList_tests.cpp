@@ -159,4 +159,4 @@ SCENARIO("Invalid remove test")
 	auto it = stringList.end();
 	it++;
 	REQUIRE_THROWS(stringList.remove(it));
-}
+} 

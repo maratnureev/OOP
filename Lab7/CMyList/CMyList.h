@@ -1,12 +1,12 @@
 #pragma once
 
-#include "InvalidStringListException.h"
 #include <algorithm>
 #include <string>
 #include <memory>
 #include <new>
 
-class CStringList
+template <typename T>
+class CMyList
 {
 	struct Node
 	{
@@ -24,7 +24,7 @@ class CStringList
 	{
 		friend class IteratorBase<true>;
 	public:
-		friend class CStringList;
+		friend class CMyList;
 		using MyType = IteratorBase<IsConst>;
 		using value_type = std::conditional_t<IsConst, const std::string, std::string>;
 		using reference = value_type&;
@@ -60,7 +60,7 @@ class CStringList
 			return it + offset;
 		}
 
-		std::string& operator*()
+		MyType& operator*()
 		{
 			if (m_node)
 				return m_node->data;
@@ -73,54 +73,28 @@ class CStringList
 			m_node = m_node->next.get();
 			return *this;
 		}
+		MyType operator--(int)
+		{
+			m_node = m_node->prev;
+			return *this;
+		}
 		MyType& operator--()
 		{
 			m_node = m_node->prev;
 			return *this;
 		}
-		MyType operator--(int)
-		{
-			MyType tmp(*this);
-			m_node = m_node->prev;
-			return tmp;
-		}
 		MyType operator++(int)
-		{ 
-			MyType tmp(*this);
-			m_node = m_node->next.get(); 
-			return tmp; 
+		{
+			m_node = m_node->next.get();
+			return *this;
 		}
 		Node* operator->()
 		{
 			return m_node;
 		}
-		bool operator != (const MyType& tmp)
-		{
-			return m_node->data != tmp.m_node->data;
-		}
-		bool operator < (MyType& tmp) 
-		{ 
-			return *m_node->data < *tmp.m_node->data;
-		}
-		bool operator <= (MyType& tmp) 
-		{ 
-			return *m_node->data <= *tmp.m_node->data;
-		}
-		bool operator > (MyType& tmp) 
-		{ 
-			return *m_node->data > *tmp.m_node->data;
-		}
-		bool operator >= (MyType& tmp)
-		{
-			return *m_node->data >= *tmp.m_node->data;
-		}
-		bool operator == (MyType& tmp)
-		{ 
-			return *m_node->data == *tmp.m_node->data;
-		}
 
 	public:
-		IteratorBase(Node* node): m_node(node)
+		IteratorBase(Node* node) : m_node(node)
 		{
 		}
 
@@ -136,7 +110,7 @@ public:
 
 	using iterator = IteratorBase<false>;
 	using const_iterator = IteratorBase<true>;
-	
+
 	void insert(const std::string& data, iterator& iter);
 	void remove(iterator& iter);
 	iterator begin();

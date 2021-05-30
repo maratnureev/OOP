@@ -61,7 +61,7 @@ CStringList::iterator CStringList::end()
 	return iterator(m_lastNode);
 }
 
-CStringList::const_iterator CStringList::�end() const
+CStringList::const_iterator CStringList::cend() const
 {
 	return const_iterator(m_lastNode);
 }
