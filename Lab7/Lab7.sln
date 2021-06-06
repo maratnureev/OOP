@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FindMaxEx", "FindMaxEx\Find
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyList", "CMyList\CMyList.vcxproj", "{AF242682-F55D-438E-80E7-1EB2F2F3385C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyList_tests", "MyList_tests\MyList_tests.vcxproj", "{F256C40A-E753-47EF-B529-BE1F06928AE9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{AF242682-F55D-438E-80E7-1EB2F2F3385C}.Release|x64.Build.0 = Release|x64
 		{AF242682-F55D-438E-80E7-1EB2F2F3385C}.Release|x86.ActiveCfg = Release|Win32
 		{AF242682-F55D-438E-80E7-1EB2F2F3385C}.Release|x86.Build.0 = Release|Win32
+		{F256C40A-E753-47EF-B529-BE1F06928AE9}.Debug|x64.ActiveCfg = Debug|x64
+		{F256C40A-E753-47EF-B529-BE1F06928AE9}.Debug|x64.Build.0 = Debug|x64
+		{F256C40A-E753-47EF-B529-BE1F06928AE9}.Debug|x86.ActiveCfg = Debug|Win32
+		{F256C40A-E753-47EF-B529-BE1F06928AE9}.Debug|x86.Build.0 = Debug|Win32
+		{F256C40A-E753-47EF-B529-BE1F06928AE9}.Release|x64.ActiveCfg = Release|x64
+		{F256C40A-E753-47EF-B529-BE1F06928AE9}.Release|x64.Build.0 = Release|x64
+		{F256C40A-E753-47EF-B529-BE1F06928AE9}.Release|x86.ActiveCfg = Release|Win32
+		{F256C40A-E753-47EF-B529-BE1F06928AE9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

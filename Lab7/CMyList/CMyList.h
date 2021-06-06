@@ -1,5 +1,5 @@
 #pragma once
-
+#include "InvalidListException.h"
 #include <algorithm>
 #include <string>
 #include <memory>
@@ -38,34 +38,23 @@ class CMyList
 		{
 		}
 
-		reference& operator*() const
+		reference operator*() const
 		{
 			return *m_node->data;
 		}
 
-		MyType& operator+=(difference_type offset)
+		reference operator+=(difference_type offset)
 		{
 			m_node += offset;
 			return *this;
 		}
 
-		MyType operator+(difference_type offset) const
-		{
-			MyType self(m_node);
-			return self += offset;
-		}
-
-		friend MyType operator+(difference_type offset, const MyType& it)
-		{
-			return it + offset;
-		}
-
-		MyType& operator*()
+		reference operator*()
 		{
 			if (m_node)
 				return m_node->data;
 			else
-				throw InvalidStringListException("Index is outside the list");
+				throw InvalidListException("Index is outside the list");
 		}
 
 		MyType& operator++()
@@ -104,24 +93,48 @@ class CMyList
 
 public:
 	size_t GetSize() const;
-	void Append(const std::string& data);
-	void PushForward(const std::string& data);
+	void Append(const T& data);
+	void PushForward(const T& data);
 	void Clear();
 
 	using iterator = IteratorBase<false>;
 	using const_iterator = IteratorBase<true>;
 
-	void insert(const std::string& data, iterator& iter);
+	void insert(const T& data, iterator& iter);
 	void remove(iterator& iter);
-	iterator begin();
-	iterator end();
-	const_iterator ñbegin() const;
-	const_iterator cend() const;
-	std::reverse_iterator<iterator> rbegin();
-	std::reverse_iterator<iterator> rend();
 
-	std::string& GetBackElement();
-	std::string const& GetBackElement() const;
+	iterator begin()
+	{
+		return iterator(m_firstNode.get());
+	}
+
+	iterator end()
+	{
+		return iterator(m_lastNode);
+	}
+
+	const_iterator ñbegin() const
+	{
+		return const_iterator(m_firstNode.get());
+	}
+
+	const_iterator cend() const
+	{
+		return const_iterator(m_lastNode);
+	}
+
+	std::reverse_iterator<iterator> rbegin()
+	{
+		return std::make_reverse_iterator(end());
+	}
+
+	std::reverse_iterator<iterator> rend()
+	{
+		return std::make_reverse_iterator(begin());
+	}
+
+	T& GetBackElement();
+	T const& GetBackElement() const;
 
 private:
 	size_t m_size = 0;
@@ -129,3 +142,119 @@ private:
 	Node* m_lastNode = nullptr;
 };
 
+template<typename T>
+inline size_t CMyList<T>::GetSize() const
+{
+	return m_size;
+}
+
+template<typename T>
+inline void CMyList<T>::Append(const T& data)
+{
+	auto newNode = std::make_unique<Node>(data, m_lastNode, nullptr);
+	Node* newLastNode = newNode.get();
+	if (m_lastNode)
+	{
+		m_lastNode->next = std::move(newNode);
+	}
+	else
+	{
+		m_firstNode = std::move(newNode);
+	}
+	m_lastNode = newLastNode;
+	++m_size;
+}
+
+template<typename T>
+inline void CMyList<T>::PushForward(const T& data)
+{
+	auto newNode = std::make_unique<Node>(data, nullptr, std::move(m_firstNode));
+	if (m_lastNode)
+	{
+		newNode->next->prev = newNode.get();
+	}
+	else
+	{
+	}
+	m_firstNode = std::move(newNode);
+	m_lastNode = m_firstNode.get();
+	
+	++m_size;
+}
+
+template<typename T>
+inline void CMyList<T>::Clear()
+{
+	auto node = std::move(m_firstNode);
+	while (node)
+	{
+		node = std::move(node->next);
+	}
+	m_lastNode = nullptr;
+	m_size = 0;
+}
+
+template<typename T>
+inline void CMyList<T>::insert(const T& data, iterator& iter)
+{
+	if (iter.m_node)
+	{
+		if (iter.m_node->prev)
+		{
+			auto prevNode = iter.m_node->prev;
+			auto newNode = std::make_unique<Node>(data, prevNode, std::move(prevNode->next));
+			iter.m_node->prev = newNode.get();
+			prevNode->next = std::move(newNode);
+			++m_size;
+		}
+		else
+		{
+			PushForward(data);
+		}
+		iter.m_node = iter.m_node->prev;
+	}
+	else
+		throw InvalidListException("Index is outside the list");
+}
+
+template<typename T>
+inline void CMyList<T>::remove(iterator& iter)
+{
+	if (iter.m_node)
+	{
+		if (iter.m_node->next)
+			iter.m_node->next->prev = iter.m_node->prev;
+
+		auto tempNode = std::move(iter.m_node->next);
+		auto tempNodePtr = tempNode.get();
+		if (iter.m_node->prev)
+		{
+			iter.m_node->prev->next = std::move(tempNode);
+		}
+		else
+		{
+			m_firstNode = std::move(tempNode);
+		}
+
+		iter.m_node = tempNodePtr;
+		--m_size;
+	}
+	else
+		throw InvalidListException("Index is out of range");
+}
+
+template<typename T>
+inline T& CMyList<T>::GetBackElement()
+{
+	if (m_lastNode)
+		return m_lastNode->data;
+	throw InvalidListException("String list is empty");
+}
+
+template<typename T>
+inline T const& CMyList<T>::GetBackElement() const
+{
+	if (m_lastNode)
+		return m_lastNode->data;
+	throw InvalidListException("String list is empty");
+}

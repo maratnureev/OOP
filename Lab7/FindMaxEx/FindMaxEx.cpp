@@ -7,8 +7,8 @@ struct Athlete
     std::string firstName;
     std::string lastName;
     std::string parentName;
-    int height;
-    int weight;
+    int height = 0;
+    int weight = 0;
 };
 
 std::vector<Athlete> InitAthleteVector()
@@ -34,7 +34,7 @@ bool FindMax(std::vector<T> const& arr, T& maxValue, Less const& less)
         maxValue = arr[0];
     else
         return false;
-    for (int i = 0; i < arr.size(); i++)
+    for (size_t i = 0; i < arr.size(); i++)
     {
         if (less(maxValue, arr[i]))
             maxValue = arr[i];
@@ -46,12 +46,28 @@ int main()
 {
     auto arr = InitAthleteVector();
     auto lessMass = [](Athlete a, Athlete b) -> bool {
-        if (a.weight < b.weight)
-            return true;
+        return a.weight < b.weight;
     };
+
     Athlete maxMassAthlete;
     FindMax(arr, maxMassAthlete, lessMass);
+    std::cout << maxMassAthlete.firstName << std::endl;
+    std::cout << maxMassAthlete.lastName << std::endl;
+    std::cout << maxMassAthlete.parentName << std::endl;
+    std::cout << maxMassAthlete.height << std::endl;
+    std::cout << maxMassAthlete.weight << std::endl;
 
+    auto lessHeight = [](Athlete a, Athlete b) -> bool {
+        return a.weight > b.weight;
+    };
+    Athlete minHeightAthlete;
+    FindMax(arr, minHeightAthlete, lessHeight);
+
+    std::cout << minHeightAthlete.firstName << std::endl;
+    std::cout << minHeightAthlete.lastName << std::endl;
+    std::cout << minHeightAthlete.parentName << std::endl;
+    std::cout << minHeightAthlete.height << std::endl;
+    std::cout << minHeightAthlete.weight << std::endl;
 }
 
 
