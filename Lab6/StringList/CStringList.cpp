@@ -114,9 +114,8 @@ void CStringList::remove(iterator& iter)
 	{
 		if (iter.m_node->next)
 			iter.m_node->next->prev = iter.m_node->prev;
-		
 		auto tempNode = std::move(iter.m_node->next);
-		auto tempNodePtr = tempNode.get();
+		auto tempNodePtr = tempNode ? tempNode.get() : nullptr;
 		if (iter.m_node->prev)
 		{
 			iter.m_node->prev->next = std::move(tempNode);
@@ -132,3 +131,4 @@ void CStringList::remove(iterator& iter)
 	else
 		throw InvalidStringListException("Index is out of range");
 }
+

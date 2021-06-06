@@ -30,6 +30,8 @@ SCENARIO("String list append test 2 element and iterator")
 	REQUIRE(stringList.GetSize() == 2);
 }
 
+//Push to the empty list
+
 SCENARIO("String list push forward test")
 {
 	CStringList stringList;
@@ -159,4 +161,15 @@ SCENARIO("Invalid remove test")
 	auto it = stringList.end();
 	it++;
 	REQUIRE_THROWS(stringList.remove(it));
-} 
+}
+
+SCENARIO("Get back element test")
+{
+	CStringList stringList;
+	stringList.Append("String for test 1");
+	stringList.Append("String for test 2");
+	stringList.Append("String for test 3");
+	REQUIRE(stringList.GetBackElement() == "String for test 3");
+}
+
+//

@@ -21,9 +21,15 @@
     <ClCompile Include="CMyList.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="MyListException.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMyList.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="MyListException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

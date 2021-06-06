@@ -10,11 +10,11 @@ class CMyList
 {
 	struct Node
 	{
-		Node(const std::string& data, Node* prev, std::unique_ptr<Node>&& next)
+		Node(const T& data, Node* prev, std::unique_ptr<Node>&& next)
 			: data(data), prev(prev), next(std::move(next))
 		{
 		}
-		std::string data;
+		T data;
 		Node* prev;
 		std::unique_ptr<Node> next;
 	};
@@ -26,7 +26,7 @@ class CMyList
 	public:
 		friend class CMyList;
 		using MyType = IteratorBase<IsConst>;
-		using value_type = std::conditional_t<IsConst, const std::string, std::string>;
+		using value_type = std::conditional_t<IsConst, const T, T>;
 		using reference = value_type&;
 		using pointer = value_type*;
 		using difference_type = ptrdiff_t;

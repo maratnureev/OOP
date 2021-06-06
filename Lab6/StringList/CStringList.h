@@ -43,23 +43,6 @@ class CStringList
 			return *m_node->data;
 		}
 
-		MyType& operator+=(difference_type offset)
-		{
-			m_node += offset;
-			return *this;
-		}
-
-		MyType operator+(difference_type offset) const
-		{
-			MyType self(m_node);
-			return self += offset;
-		}
-
-		friend MyType operator+(difference_type offset, const MyType& it)
-		{
-			return it + offset;
-		}
-
 		std::string& operator*()
 		{
 			if (m_node)

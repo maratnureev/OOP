@@ -207,3 +207,13 @@ SCENARIO("iterator test")
 	REQUIRE(*it == 'H');
 }
 
+SCENARIO("reverse iterator test")
+{
+	CMyString string("Hello world!");
+	auto it = string.rbegin();
+	REQUIRE(*it == '!');
+	it++;
+	REQUIRE(*it == 'd');
+	it--;
+	REQUIRE(*it == '!');
+}
