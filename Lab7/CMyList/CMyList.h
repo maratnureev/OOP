@@ -43,12 +43,6 @@ class CMyList
 			return *m_node->data;
 		}
 
-		reference operator+=(difference_type offset)
-		{
-			m_node += offset;
-			return *this;
-		}
-
 		reference operator*()
 		{
 			if (m_node)
@@ -72,6 +66,7 @@ class CMyList
 			m_node = m_node->prev;
 			return *this;
 		}
+		// wrong postfix increment 
 		MyType operator++(int)
 		{
 			m_node = m_node->next.get();
@@ -100,8 +95,8 @@ public:
 	using iterator = IteratorBase<false>;
 	using const_iterator = IteratorBase<true>;
 
-	void insert(const T& data, iterator& iter);
-	void remove(iterator& iter);
+	void Insert(const T& data, iterator& iter);
+	void Remove(iterator& iter);
 
 	iterator begin()
 	{
@@ -173,10 +168,8 @@ inline void CMyList<T>::PushForward(const T& data)
 	{
 		newNode->next->prev = newNode.get();
 	}
-	else
-	{
-	}
 	m_firstNode = std::move(newNode);
+	// add condition and tests
 	m_lastNode = m_firstNode.get();
 	
 	++m_size;
@@ -195,7 +188,7 @@ inline void CMyList<T>::Clear()
 }
 
 template<typename T>
-inline void CMyList<T>::insert(const T& data, iterator& iter)
+inline void CMyList<T>::Insert(const T& data, iterator& iter)
 {
 	if (iter.m_node)
 	{
@@ -218,7 +211,7 @@ inline void CMyList<T>::insert(const T& data, iterator& iter)
 }
 
 template<typename T>
-inline void CMyList<T>::remove(iterator& iter)
+inline void CMyList<T>::Remove(iterator& iter)
 {
 	if (iter.m_node)
 	{

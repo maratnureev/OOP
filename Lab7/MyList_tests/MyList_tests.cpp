@@ -1,5 +1,7 @@
 ﻿#define CATCH_CONFIG_MAIN
 #include <string>
+#include <vector>
+
 #include "../../catch2/catch.hpp"
 
 #include "../CMyList/CMyList.h"
@@ -62,7 +64,7 @@ SCENARIO("String list clear test")
 	REQUIRE(stringList.GetSize() == 0);
 }
 
-SCENARIO("String list insert in the middle test")
+SCENARIO("String list Insert in the middle test")
 {
 	CMyList<std::string> stringList;
 	stringList.Append("String for test 1");
@@ -70,7 +72,7 @@ SCENARIO("String list insert in the middle test")
 	stringList.Append("String for test 3");
 	auto it = stringList.begin();
 	it++;
-	REQUIRE_NOTHROW(stringList.insert("String for test 4", it));
+	REQUIRE_NOTHROW(stringList.Insert("String for test 4", it));
 	REQUIRE(*it == "String for test 4");
 	REQUIRE(*stringList.begin() == "String for test 1");
 	it++;
@@ -78,14 +80,14 @@ SCENARIO("String list insert in the middle test")
 	REQUIRE(stringList.GetSize() == 4);
 }
 
-SCENARIO("String list insert at the begin test")
+SCENARIO("String list Insert at the begin test")
 {
 	CMyList<std::string> stringList;
 	stringList.Append("String for test 1");
 	stringList.Append("String for test 2");
 	stringList.Append("String for test 3");
 	auto it = stringList.begin();
-	REQUIRE_NOTHROW(stringList.insert("String for test 4", it));
+	REQUIRE_NOTHROW(stringList.Insert("String for test 4", it));
 	REQUIRE(*it == "String for test 4");
 	REQUIRE(*stringList.begin() == "String for test 4");
 	++it;
@@ -93,14 +95,14 @@ SCENARIO("String list insert at the begin test")
 	REQUIRE(stringList.GetSize() == 4);
 }
 
-SCENARIO("String list insert at the end test")
+SCENARIO("String list Insert at the end test")
 {
 	CMyList<std::string> stringList;
 	stringList.Append("String for test 1");
 	stringList.Append("String for test 2");
 	stringList.Append("String for test 3");
 	auto it = stringList.end();
-	REQUIRE_NOTHROW(stringList.insert("String for test 4", it));
+	REQUIRE_NOTHROW(stringList.Insert("String for test 4", it));
 	REQUIRE(*it == "String for test 4");
 	auto newIt = stringList.begin();
 	++newIt;
@@ -110,7 +112,7 @@ SCENARIO("String list insert at the end test")
 	REQUIRE(stringList.GetSize() == 4);
 }
 
-SCENARIO("String list remove in the middle test")
+SCENARIO("String list Remove in the middle test")
 {
 	CMyList<std::string> stringList;
 	stringList.Append("String for test 1");
@@ -118,38 +120,38 @@ SCENARIO("String list remove in the middle test")
 	stringList.Append("String for test 3");
 	auto it = stringList.begin();
 	++it;
-	REQUIRE_NOTHROW(stringList.remove(it));
+	REQUIRE_NOTHROW(stringList.Remove(it));
 	REQUIRE(*it == "String for test 3");
 	REQUIRE(*stringList.begin() == "String for test 1");
 	REQUIRE(stringList.GetSize() == 2);
 }
 
-SCENARIO("String list remove at the begin test")
+SCENARIO("String list Remove at the begin test")
 {
 	CMyList<std::string> stringList;
 	stringList.Append("String for test 1");
 	stringList.Append("String for test 2");
 	stringList.Append("String for test 3");
 	auto it = stringList.begin();
-	REQUIRE_NOTHROW(stringList.remove(it));
+	REQUIRE_NOTHROW(stringList.Remove(it));
 	REQUIRE(*it == "String for test 2");
 	REQUIRE(*stringList.begin() == "String for test 2");
 	REQUIRE(stringList.GetSize() == 2);
 }
 
-SCENARIO("String list remove at the end test")
+SCENARIO("String list Remove at the end test")
 {
 	CMyList<std::string> stringList;
 	stringList.Append("String for test 1");
 	stringList.Append("String for test 2");
 	stringList.Append("String for test 3");
 	auto it = stringList.end();
-	REQUIRE_NOTHROW(stringList.remove(it));
+	REQUIRE_NOTHROW(stringList.Remove(it));
 	REQUIRE_THROWS(*it);
 	REQUIRE(stringList.GetSize() == 2);
 }
 
-SCENARIO("Invalid insert test")
+SCENARIO("Invalid Insert test")
 {
 	CMyList<std::string> stringList;
 	stringList.Append("String for test 1");
@@ -157,10 +159,10 @@ SCENARIO("Invalid insert test")
 	stringList.Append("String for test 3");
 	auto it = stringList.end();
 	it++;
-	REQUIRE_THROWS(stringList.insert("String for test 4", it));
+	REQUIRE_THROWS(stringList.Insert("String for test 4", it));
 }
 
-SCENARIO("Invalid remove test")
+SCENARIO("Invalid Remove test")
 {
 	CMyList<std::string> stringList;
 	stringList.Append("String for test 1");
@@ -168,7 +170,7 @@ SCENARIO("Invalid remove test")
 	stringList.Append("String for test 3");
 	auto it = stringList.end();
 	it++;
-	REQUIRE_THROWS(stringList.remove(it));
+	REQUIRE_THROWS(stringList.Remove(it));
 }
 
 SCENARIO("Get back element test")
@@ -239,7 +241,7 @@ SCENARIO("integer list clear test")
 	REQUIRE(intList.GetSize() == 0);
 }
 
-SCENARIO("integer list insert in the middle test")
+SCENARIO("integer list Insert in the middle test")
 {
 	CMyList<int> intList;
 	intList.Append(1);
@@ -247,7 +249,7 @@ SCENARIO("integer list insert in the middle test")
 	intList.Append(3);
 	auto it = intList.begin();
 	it++;
-	REQUIRE_NOTHROW(intList.insert(4, it));
+	REQUIRE_NOTHROW(intList.Insert(4, it));
 	REQUIRE(*it == 4);
 	REQUIRE(*intList.begin() == 1);
 	it++;
@@ -255,14 +257,14 @@ SCENARIO("integer list insert in the middle test")
 	REQUIRE(intList.GetSize() == 4);
 }
 
-SCENARIO("integer list insert at the begin test")
+SCENARIO("integer list Insert at the begin test")
 {
 	CMyList<int> intList;
 	intList.Append(1);
 	intList.Append(2);
 	intList.Append(3);
 	auto it = intList.begin();
-	REQUIRE_NOTHROW(intList.insert(4, it));
+	REQUIRE_NOTHROW(intList.Insert(4, it));
 	REQUIRE(*it == 4);
 	REQUIRE(*intList.begin() == 4);
 	++it;
@@ -270,14 +272,14 @@ SCENARIO("integer list insert at the begin test")
 	REQUIRE(intList.GetSize() == 4);
 }
 
-SCENARIO("integer list insert at the end test")
+SCENARIO("integer list Insert at the end test")
 {
 	CMyList<int> intList;
 	intList.Append(1);
 	intList.Append(2);
 	intList.Append(3);
 	auto it = intList.end();
-	REQUIRE_NOTHROW(intList.insert(4, it));
+	REQUIRE_NOTHROW(intList.Insert(4, it));
 	REQUIRE(*it == 4);
 	auto newIt = intList.begin();
 	++newIt;
@@ -287,7 +289,7 @@ SCENARIO("integer list insert at the end test")
 	REQUIRE(intList.GetSize() == 4);
 }
 
-SCENARIO("integer list remove in the middle test")
+SCENARIO("integer list Remove in the middle test")
 {
 	CMyList<int> intList;
 	intList.Append(1);
@@ -295,33 +297,33 @@ SCENARIO("integer list remove in the middle test")
 	intList.Append(3);
 	auto it = intList.begin();
 	++it;
-	REQUIRE_NOTHROW(intList.remove(it));
+	REQUIRE_NOTHROW(intList.Remove(it));
 	REQUIRE(*it == 3);
 	REQUIRE(*intList.begin() == 1);
 	REQUIRE(intList.GetSize() == 2);
 }
 
-SCENARIO("integer list remove at the begin test")
+SCENARIO("integer list Remove at the begin test")
 {
 	CMyList<int> intList;
 	intList.Append(1);
 	intList.Append(2);
 	intList.Append(3);
 	auto it = intList.begin();
-	REQUIRE_NOTHROW(intList.remove(it));
+	REQUIRE_NOTHROW(intList.Remove(it));
 	REQUIRE(*it == 2);
 	REQUIRE(*intList.begin() == 2);
 	REQUIRE(intList.GetSize() == 2);
 }
 
-SCENARIO("integer list remove at the end test")
+SCENARIO("integer list Remove at the end test")
 {
 	CMyList<int> intList;
 	intList.Append(1);
 	intList.Append(2);
 	intList.Append(3);
 	auto it = intList.end();
-	REQUIRE_NOTHROW(intList.remove(it));
+	REQUIRE_NOTHROW(intList.Remove(it));
 	REQUIRE_THROWS(*it);
 	REQUIRE(intList.GetSize() == 2);
 }
