@@ -1,12 +1,13 @@
 #pragma once
 #include "CPersonImpl.h"
+#include "IPupil.h"
 
 template <typename Base>
-class CPupil : public CPersonImpl<Base>
+class CPupil : public CPersonImpl<IPupil>
 {
 public:
-	CPupil(std::string name, std::string surname, std::string middleName, std::string address, int schoolNumber, std::string schoolClass)
-		: CPersonImpl(name, surname, middleName, address)
+	CPupil(std::string const& name, std::string const& surname, std::string const& middleName, std::string const& address, int schoolNumber, std::string const& schoolClass)
+		: CPersonImpl<Base>(name, surname, middleName, address)
 		, m_schoolNumber(schoolNumber)
 		, m_schoolClass(schoolClass)
 	{}

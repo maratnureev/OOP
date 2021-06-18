@@ -4,7 +4,7 @@
 
 class CStudent : public CStudentImpl<IStudent>
 {
-	CStudent(std::string name, std::string surname, std::string middleName, std::string address, int studentIdNumber, std::string universityName)
+	CStudent(std::string const& name, std::string const& surname, std::string const& middleName, std::string const& address, int studentIdNumber, std::string const& universityName)
 		: CStudentImpl(name, surname, middleName, address, studentIdNumber, universityName) {}
 };
 

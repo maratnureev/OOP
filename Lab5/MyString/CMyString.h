@@ -75,12 +75,12 @@ public:
 			return it + offset;
 		}
 
-		friend MyType operator-(difference_type offset, const MyType& it)
+		friend MyType operator-(difference_type offset, const MyType& it) // wat?
 		{
 			return it - offset;
 		}
 
-		char& operator*()
+		char& operator*()const
 		{
 			if (m_item)
 				return *m_item;
@@ -113,7 +113,7 @@ public:
 			m_item = m_item++;
 			return tmp;
 		}
-		char* operator->()
+		char* operator->() //Лишний итератор
 		{
 			if (m_item)
 				return m_item;
@@ -124,7 +124,7 @@ public:
 		{
 			return m_item != tmp.m_item;
 		}
-		bool operator < (MyType& tmp)
+		bool operator < (MyType& tmp) //Исправить
 		{
 			return *m_item < *tmp.m_item;
 		}
@@ -165,6 +165,9 @@ public:
 	std::reverse_iterator<iterator> rend();
 
 private:
+	struct OwnPtr {char * data};
+	CMyString(OwnPtr p, size_t length);
+
 	char* m_string;  
 	size_t m_length;
 };

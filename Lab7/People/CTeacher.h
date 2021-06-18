@@ -1,14 +1,16 @@
 #pragma once
 #include "CPersonImpl.h"
-#include "IPerson.h"
+#include "ITeacher.h"
 
-class CTeacher : public CPersonImpl<IPerson>
+class CTeacher : public CPersonImpl<ITeacher>
 {
 public:
-	CTeacher(std::string name, std::string surname, std::string middleName, std::string address, std::string subject)
-		: CPersonImpl(name, surname, middleName, address) {}
+	CTeacher(std::string const& name, std::string const& surname, std::string const& middleName, std::string const& address, std::string const& subject)
+		: CPersonImpl(name, surname, middleName, address)
+		, m_subject(subject)
+	{}
 
-	std::string GetSubject()
+	std::string GetSubject() const
 	{
 		return m_subject;
 	}

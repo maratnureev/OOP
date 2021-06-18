@@ -1,5 +1,8 @@
 #pragma once
-class IWorker
+#include "IPerson.h"
+
+class IWorker : public IPerson
 {
+	virtual std::string GetSpecialty() const = 0;
 };
 

@@ -1,12 +1,13 @@
 #pragma once
 #include "CPersonImpl.h"
+#include "IStudent.h"
 
 template <typename Base>
-class CStudentImpl : public CPersonImpl<Base>
+class CStudentImpl : public CPersonImpl<IStudent>
 {
 public:
-	CStudentImpl(std::string name, std::string surname, std::string middleName, std::string address, int studentIdNumber, std::string universityName)
-		: CPersonImpl<Base>(name, surname, middleName, address)
+	CStudentImpl(std::string const& name, std::string const& surname, std::string const& middleName, std::string const& address, int studentIdNumber, std::string const& universityName)
+		: CPersonImpl(name, surname, middleName, address)
 		, m_studentIdNumber(studentIdNumber)
 		, m_universityName(universityName)
 	{}

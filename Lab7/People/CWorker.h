@@ -1,14 +1,16 @@
 #pragma once
 #include "CPersonImpl.h"
-#include "IPerson.h"
+#include "IWorker.h"
 
-class CWorker : public CPersonImpl<IPerson>
+class CWorker : public CPersonImpl<IWorker>
 {
 public:
-	CWorker(std::string name, std::string surname, std::string middleName, std::string address, std::string specialty)
-	: CPersonImpl(name, surname, middleName, address) {}
+	CWorker(std::string const& name, std::string const& surname, std::string const& middleName, std::string const& address, std::string const& specialty)
+	: CPersonImpl(name, surname, middleName, address) 
+	, m_specialty(specialty)
+	{}
 
-	std::string GetSpecialty()
+	std::string GetSpecialty() const
 	{
 		return m_specialty;
 	}

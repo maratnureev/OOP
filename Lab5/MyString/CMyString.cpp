@@ -11,7 +11,7 @@ CMyString::CMyString()
 
 CMyString::CMyString(const char* pString)
 {
-	if (pString == nullptr) 
+	if (pString == nullptr) // Лучше выбросить исключение
 	{
 		m_string = new char[1];
 		m_string[0] = '\0';
@@ -27,7 +27,7 @@ CMyString::CMyString(const char* pString)
 
 CMyString::CMyString(const char* pString, size_t length)
 {
-	if (pString == nullptr)
+	if (pString == nullptr) //Лучше исключение
 	{
 		m_string = new char[1];
 		m_string[0] = '\0';
@@ -52,7 +52,7 @@ CMyString::CMyString(CMyString&& other)
 {
 	m_length = other.m_length;
 	m_string = other.m_string;
-	other.m_string = new char[1];
+	other.m_string = new char[1]; // Исключение здесь приведет к неопределенному поведению
 	other.m_string[0] = 0;
 	other.m_length = 0;
 }
@@ -68,7 +68,7 @@ CMyString::CMyString(std::string const& stlString)
 CMyString::~CMyString()
 {
 	m_length = 0;
-	delete m_string;
+	delete[] m_string;
 }
 
 size_t CMyString::GetLength() const
@@ -78,6 +78,8 @@ size_t CMyString::GetLength() const
 
 const char* CMyString::GetStringData() const
 {
+	if (m_string == nullptr)
+		return "";
 	return m_string;
 }
 
@@ -90,7 +92,7 @@ CMyString operator+(const CMyString& a, const CMyString& b)
 	memcpy(resultString + a.m_length, b.m_string, b.m_length + 1);
 	try
 	{
-		CMyString result(resultString, length);
+		CMyString result(resultString, length);// избавиться от избыточного копирования
 		delete[] resultString;
 		return result;
 	}
@@ -109,7 +111,7 @@ void CMyString::Clear()
 
 CMyString& CMyString::operator=(const CMyString& a)
 {
-	if (a == *this)
+	if (a == *this) // Сравнивать указатели, а не содержимое
 		return *this;
 	m_string = new char[a.m_length + 1];
 	for (size_t i = 0; i < a.m_length + 1; i++)
@@ -125,7 +127,7 @@ CMyString CMyString::SubString(size_t start, size_t length) const
 	char* resultString;
 	resultString = new char[length + 1];
 	memcpy(resultString, &m_string[start], length + 1);
-	CMyString str(resultString, length);
+	CMyString str(resultString, length); //Утечка памяти
 
 	delete[] resultString;
 
@@ -134,7 +136,7 @@ CMyString CMyString::SubString(size_t start, size_t length) const
 
 bool operator== (const CMyString& a, const CMyString& b)
 {
-	size_t minLength = a.m_length > b.m_length ? a.m_length : b.m_length;
+	size_t minLength = a.m_length > b.m_length ? a.m_length : b.m_length; //Неэффективное сравнение
 	int result = memcmp(a.m_string, b.m_string, minLength);
 	if (result == 0)
 		return a.m_length == b.m_length;
@@ -224,7 +226,7 @@ std::istream& operator>> (std::istream& in, CMyString& a)
 			break;
 		tempString[0] = tempChar;
 		tempString[1] = '\0';
-		inputString = inputString + tempString;
+		inputString = inputString + tempString; //Утечка памяти
 	}
 	delete[] tempString;
 	a = inputString;
@@ -238,7 +240,7 @@ bool operator>(const CMyString& a, const CMyString& b)
 	int result = memcmp(a.m_string, b.m_string, minLength);
 	if (result == 0)
 		return a.m_length > b.m_length;
-	return result == 1;
+	return result > 0;
 }
 
 bool operator<(const CMyString& a, const CMyString& b)

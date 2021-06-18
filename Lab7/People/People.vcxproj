@@ -147,8 +147,12 @@
     <ClCompile Include="CStudentImpl.cpp" />
     <ClCompile Include="CTeacher.cpp" />
     <ClCompile Include="CWorker.cpp" />
+    <ClCompile Include="IAdvancedStudent.cpp" />
     <ClCompile Include="IPerson.cpp" />
+    <ClCompile Include="IPupil.cpp" />
     <ClCompile Include="IStudent.cpp" />
+    <ClCompile Include="ITeacher.cpp" />
+    <ClCompile Include="IWorker.cpp" />
     <ClCompile Include="People.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,8 +164,12 @@
     <ClInclude Include="CStudentImpl.h" />
     <ClInclude Include="CTeacher.h" />
     <ClInclude Include="CWorker.h" />
+    <ClInclude Include="IAdvancedStudent.h" />
     <ClInclude Include="IPerson.h" />
+    <ClInclude Include="IPupil.h" />
     <ClInclude Include="IStudent.h" />
+    <ClInclude Include="ITeacher.h" />
+    <ClInclude Include="IWorker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

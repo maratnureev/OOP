@@ -30,8 +30,8 @@ public:
     }
 
 private:
-    std::string m_name = "";
-    std::string m_surname = "";
-    std::string m_middleName = "";
-    std::string m_address = "";
+    std::string m_name;
+    std::string m_surname;
+    std::string m_middleName;
+    std::string m_address;
 };

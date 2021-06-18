@@ -5,6 +5,6 @@
 class CPerson : public CPersonImpl<IPerson>
 {
 public:
-    CPerson(std::string name, std::string surname, std::string middleName, std::string address) 
+    CPerson(std::string const& name, std::string const& surname, std::string const& middleName, std::string const& address)
         : CPersonImpl(name, surname, middleName, address) {}
 };
