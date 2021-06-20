@@ -128,9 +128,7 @@ SCENARIO("Operator = test")
 
 SCENARIO("test nullptr as char array in constructor")
 {
-	CMyString string(nullptr);
-	REQUIRE(string.GetLength() == 0);
-	REQUIRE(memcmp(string.GetStringData(), "", 1) == 0);
+	REQUIRE_THROWS(CMyString(nullptr));
 }
 
 SCENARIO("test operator ==")

@@ -70,79 +70,65 @@ public:
 			return self += offset;
 		}
 
-		friend MyType operator+(difference_type offset, const MyType& it)
-		{
-			return it + offset;
-		}
-
-		friend MyType operator-(difference_type offset, const MyType& it) // wat?
-		{
-			return it - offset;
-		}
-
-		char& operator*()const
-		{
-			if (m_item)
-				return *m_item;
-			else
-				throw StringException("Index is outside the list");
-		}
 		difference_type operator-(const MyType& rhs) const
 		{
 			return m_item - rhs.m_item;
 		}
+
 		MyType& operator++()
 		{
 			m_item = m_item++;
 			return *this;
 		}
+
 		MyType& operator--()
 		{
 			m_item = m_item--;
 			return *this;
 		}
+
 		MyType operator--(int)
 		{
 			MyType tmp(*this);
 			m_item = m_item--;
 			return tmp;
 		}
+
 		MyType operator++(int)
 		{
 			MyType tmp(*this);
 			m_item = m_item++;
 			return tmp;
 		}
-		char* operator->() //Лишний итератор
-		{
-			if (m_item)
-				return m_item;
-			else
-				throw StringException("Index is outside the list");
-		}
+
 		bool operator != (const MyType& tmp)
 		{
 			return m_item != tmp.m_item;
 		}
-		bool operator < (MyType& tmp) //Исправить
+
+		bool operator < (MyType& tmp)
 		{
-			return *m_item < *tmp.m_item;
+			return std::distance(this, tmp) < 0;
 		}
+
 		bool operator <= (MyType& tmp)
 		{
-			return *m_item <= *tmp.m_item;
+			return std::distance(this, tmp) <= 0;
 		}
+
 		bool operator > (MyType& tmp)
 		{
-			return *m_item > *tmp.m_item;
+			return std::distance(this, tmp) > 0;
 		}
+
 		bool operator >= (MyType& tmp)
 		{
-			return *m_item >= *tmp.m_item;
+			return std::distance(this, tmp) >= 0;
 		}
+
 		bool operator == (MyType& tmp)
 		{
-			return *m_item == *tmp.m_item;
+			return std::distance(this, tmp) == 0;
 		}
 
 	public:
@@ -165,8 +151,10 @@ public:
 	std::reverse_iterator<iterator> rend();
 
 private:
-	struct OwnPtr {char * data};
-	CMyString(OwnPtr p, size_t length);
+	struct OwnPtr {
+		char* data;
+	};
+	CMyString(const OwnPtr &p, size_t length);
 
 	char* m_string;  
 	size_t m_length;
